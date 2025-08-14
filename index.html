@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QRMaster Pro - النسخة الاحترافية</title>
+    <title>QR Master Pro</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
     <style>
         :root {
             --primary: #4361ee;
@@ -25,7 +27,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Tajawal', 'Segoe UI', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
@@ -85,6 +87,12 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 25px;
+        }
+        
+        @media (max-width: 1000px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
         }
         
         .card {
@@ -147,6 +155,12 @@
             display: flex;
             gap: 15px;
             margin-bottom: 25px;
+        }
+        
+        @media (max-width: 768px) {
+            .color-picker {
+                flex-direction: column;
+            }
         }
         
         .color-option {
@@ -291,6 +305,16 @@
             border: 2px dashed var(--card-border);
             transition: all 0.3s ease;
             margin-bottom: 25px;
+            padding: 20px;
+        }
+        
+        #previewContent {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
         }
         
         .preview-placeholder {
@@ -303,6 +327,13 @@
             font-size: 4rem;
             margin-bottom: 20px;
             color: rgba(255,255,255,0.2);
+        }
+        
+        .qr-preview {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
         
         .result-container {
@@ -462,40 +493,41 @@
             100% { transform: rotate(360deg); }
         }
         
-        @media (max-width: 1000px) {
-            .grid {
-                grid-template-columns: 1fr;
-            }
-            
-            h1 {
-                font-size: 2.3rem;
-            }
-            
-            .subtitle {
-                font-size: 1.1rem;
-            }
+        #socialUsername {
+            display: none;
         }
         
-        @media (max-width: 768px) {
-            .actions {
-                flex-direction: column;
-            }
-            
-            button {
-                width: 100%;
-            }
-            
-            .color-picker {
-                flex-direction: column;
-            }
-            
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .history-items {
-                grid-template-columns: 1fr;
-            }
+        #wifiInputs {
+            display: none;
+        }
+        
+        #vcardInputs {
+            display: none;
+        }
+        
+        #barcodeInput {
+            display: none;
+        }
+        
+        #smsInput {
+            display: none;
+        }
+        
+        #phoneInput {
+            display: none;
+        }
+        
+        .social-selector {
+            margin-bottom: 20px;
+        }
+        
+        .social-selector label {
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .social-selector select {
+            margin-bottom: 0;
         }
     </style>
 </head>
@@ -504,63 +536,123 @@
         <header>
             <div class="logo">
                 <i class="fas fa-qrcode"></i>
-                <h1>QRMaster Pro</h1>
+                <h1>QR Master Pro</h1>
             </div>
             <div class="subtitle">
-                التطبيق الاحترافي لإنشاء وقراءة رموز QR والباركود بكفاءة عالية. تم تصميم الأداة لتكون شاملة وسهلة الاستخدام مع الحفاظ على الخصوصية.
+                The professional solution for generating and scanning QR codes with advanced features and automatic detection.
             </div>
         </header>
 
         <div class="grid">
             <div class="card">
-                <h2 class="card-title"><i class="fas fa-cogs"></i> إعدادات التطبيق</h2>
+                <h2 class="card-title"><i class="fas fa-cogs"></i> Application Settings</h2>
                 
                 <div class="mode-selector">
-                    <label for="mode">اختر الوضع:</label>
+                    <label for="mode">Select Mode:</label>
                     <select id="mode">
-                        <option value="generate">إنشاء رمز QR/باركود</option>
-                        <option value="scan">مسح رمز بالكاميرا</option>
-                        <option value="image">مسح رمز من صورة</option>
+                        <option value="generate">Generate QR/Barcode</option>
+                        <option value="scan">Scan QR with Camera</option>
+                        <option value="image">Scan QR from Image</option>
                     </select>
                 </div>
                 
                 <!-- Generate Section -->
                 <div id="genSection">
-                    <label for="dataType">نوع البيانات:</label>
+                    <label for="dataType">Data Type:</label>
                     <select id="dataType">
-                        <option value="url">رابط ويب</option>
-                        <option value="text">نص</option>
-                        <option value="contact">معلومات اتصال</option>
-                        <option value="wifi">شبكة واي فاي</option>
-                        <option value="sms">رسالة SMS</option>
-                        <option value="vcard">بطاقة اتصال (vCard)</option>
-                        <option value="barcode">باركود</option>
+                        <option value="url">Website URL</option>
+                        <option value="text">Plain Text</option>
+                        <option value="contact">Contact Information</option>
+                        <option value="wifi">Wi-Fi Network</option>
+                        <option value="sms">SMS Message</option>
+                        <option value="vcard">vCard</option>
+                        <option value="social">Social Media Profile</option>
+                        <option value="barcode">Barcode</option>
                     </select>
                     
                     <div id="dataInputs">
-                        <div class="input-group">
-                            <label for="urlInput">الرابط:</label>
+                        <div class="input-group" id="urlInputGroup">
+                            <label for="urlInput">Website URL:</label>
                             <input type="text" id="urlInput" placeholder="https://example.com">
+                        </div>
+                        
+                        <div class="input-group" id="socialUsername" style="display: none;">
+                            <div class="social-selector">
+                                <label for="socialPlatform">Social Platform:</label>
+                                <select id="socialPlatform">
+                                    <option value="facebook">Facebook</option>
+                                    <option value="instagram">Instagram</option>
+                                    <option value="twitter">Twitter</option>
+                                    <option value="linkedin">LinkedIn</option>
+                                    <option value="tiktok">TikTok</option>
+                                </select>
+                            </div>
+                            <label for="socialInput">Username:</label>
+                            <input type="text" id="socialInput" placeholder="username">
+                        </div>
+                        
+                        <div class="input-group" id="wifiInputs" style="display: none;">
+                            <label for="wifiName">Network Name (SSID):</label>
+                            <input type="text" id="wifiName" placeholder="MyWiFiNetwork">
+                            
+                            <label for="wifiPassword">Password:</label>
+                            <input type="text" id="wifiPassword" placeholder="SecurePassword123">
+                            
+                            <label for="wifiSecurity">Security Type:</label>
+                            <select id="wifiSecurity">
+                                <option value="WPA">WPA/WPA2</option>
+                                <option value="WEP">WEP</option>
+                                <option value="nopass">None (Open)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="input-group" id="vcardInputs" style="display: none;">
+                            <label for="vcardName">Full Name:</label>
+                            <input type="text" id="vcardName" placeholder="John Doe">
+                            
+                            <label for="vcardPhone">Phone Number:</label>
+                            <input type="text" id="vcardPhone" placeholder="+1 234 567 890">
+                            
+                            <label for="vcardEmail">Email Address:</label>
+                            <input type="text" id="vcardEmail" placeholder="john@example.com">
+                        </div>
+                        
+                        <div class="input-group" id="barcodeInput" style="display: none;">
+                            <label for="barcodeData">Barcode Data:</label>
+                            <input type="text" id="barcodeData" placeholder="Product ID or Number">
+                        </div>
+                        
+                        <div class="input-group" id="smsInput" style="display: none;">
+                            <label for="smsNumber">Phone Number:</label>
+                            <input type="text" id="smsNumber" placeholder="+1 234 567 890">
+                            
+                            <label for="smsMessage">Message:</label>
+                            <input type="text" id="smsMessage" placeholder="Your message here">
+                        </div>
+                        
+                        <div class="input-group" id="phoneInput" style="display: none;">
+                            <label for="phoneNumber">Phone Number:</label>
+                            <input type="text" id="phoneNumber" placeholder="+1 234 567 890">
                         </div>
                     </div>
                     
                     <div class="color-picker">
                         <div class="color-option">
-                            <label>لون الرمز:</label>
+                            <label>QR Code Color:</label>
                             <input type="color" id="qrColor" value="#000000">
                         </div>
                         <div class="color-option">
-                            <label>لون الخلفية:</label>
+                            <label>Background Color:</label>
                             <input type="color" id="bgColor" value="#FFFFFF">
                         </div>
                     </div>
                     
                     <div class="actions">
                         <button class="btn-primary" id="generateBtn">
-                            <i class="fas fa-bolt"></i> إنشاء الرمز
+                            <i class="fas fa-bolt"></i> Generate Code
                         </button>
                         <button class="btn-secondary" id="clearBtn">
-                            <i class="fas fa-trash"></i> مسح الكل
+                            <i class="fas fa-trash"></i> Clear All
                         </button>
                     </div>
                 </div>
@@ -572,32 +664,29 @@
                         <div id="videoOverlay"></div>
                         <div id="cameraControls">
                             <button class="btn-success" id="startCameraBtn">
-                                <i class="fas fa-video"></i> تشغيل الكاميرا
+                                <i class="fas fa-video"></i> Start Camera
                             </button>
                             <button class="btn-danger" id="stopCameraBtn" style="display: none;">
-                                <i class="fas fa-stop"></i> إيقاف الكاميرا
-                            </button>
-                            <button class="btn-warning" id="captureBtn" style="display: none;">
-                                <i class="fas fa-camera"></i> التقاط صورة
+                                <i class="fas fa-stop"></i> Stop Camera
                             </button>
                         </div>
                     </div>
                     
                     <div class="actions">
                         <button class="btn-secondary" id="retryScanBtn" style="display: none;">
-                            <i class="fas fa-redo"></i> إعادة المحاولة
+                            <i class="fas fa-redo"></i> Scan Again
                         </button>
                     </div>
                 </div>
                 
                 <!-- Image Scan Section -->
                 <div id="imageSection" style="display: none;">
-                    <label>اختر صورة تحتوي على رمز:</label>
+                    <label>Select an image containing a QR code:</label>
                     <input type="file" id="imageFile" accept="image/*">
                     
                     <div class="actions" style="margin-top: 25px;">
                         <button class="btn-success" id="scanImageBtn">
-                            <i class="fas fa-search"></i> مسح الصورة
+                            <i class="fas fa-search"></i> Scan Image
                         </button>
                     </div>
                 </div>
@@ -608,91 +697,90 @@
                         <div class="feature-icon">
                             <i class="fas fa-lock"></i>
                         </div>
-                        <h3 class="feature-title">خصوصية تامة</h3>
-                        <p class="feature-desc">جميع العمليات تتم على جهازك دون إرسال أي بيانات إلى خوادم خارجية</p>
+                        <h3 class="feature-title">Complete Privacy</h3>
+                        <p class="feature-desc">All processing happens on your device - no data is sent to servers</p>
                     </div>
                     
                     <div class="feature-card">
                         <div class="feature-icon">
                             <i class="fas fa-bolt"></i>
                         </div>
-                        <h3 class="feature-title">سرعة فائقة</h3>
-                        <p class="feature-desc">إنشاء ومسح الرموز في ثوانٍ معدودة باستخدام أحدث التقنيات</p>
+                        <h3 class="feature-title">Lightning Fast</h3>
+                        <p class="feature-desc">Generate and scan codes in seconds with advanced technology</p>
                     </div>
                     
                     <div class="feature-card">
                         <div class="feature-icon">
                             <i class="fas fa-shield-alt"></i>
                         </div>
-                        <h3 class="feature-title">آمن ومضمون</h3>
-                        <p class="feature-desc">لا تتبع ولا إعلانات - تجربة مستخدم نظيفة وآمنة</p>
+                        <h3 class="feature-title">Secure & Reliable</h3>
+                        <p class="feature-desc">No tracking or ads - just a clean, secure user experience</p>
                     </div>
                 </div>
             </div>
             
             <div class="card">
-                <h2 class="card-title"><i class="fas fa-eye"></i> المعاينة والنتائج</h2>
+                <h2 class="card-title"><i class="fas fa-eye"></i> Preview & Results</h2>
                 
                 <div id="previewBox">
-                    <div class="preview-placeholder">
-                        <i class="fas fa-qrcode"></i>
-                        <h3>ستظهر نتيجة المسح أو الرمز المولد هنا</h3>
-                        <p>استخدم الإعدادات على اليسار لإنشاء أو مسح رمز</p>
+                    <div id="previewContent">
+                        <div class="preview-placeholder">
+                            <i class="fas fa-qrcode"></i>
+                            <h3>Scan result or generated code will appear here</h3>
+                            <p>Use the settings on the left to generate or scan a code</p>
+                        </div>
                     </div>
                 </div>
                 
                 <div id="resultContainer" style="display: none;">
                     <div class="result-header">
-                        <h3><i class="fas fa-check-circle"></i> تم العثور على رمز بنجاح</h3>
+                        <h3><i class="fas fa-check-circle"></i> QR Code Detected</h3>
                         <button class="btn-secondary" id="copyResultBtn">
-                            <i class="fas fa-copy"></i> نسخ النتيجة
+                            <i class="fas fa-copy"></i> Copy Result
                         </button>
                     </div>
                     
                     <div class="result-content" id="resultText">
-                        النتيجة ستظهر هنا...
+                        Result will appear here...
                     </div>
                     
                     <div class="actions">
                         <button class="btn-success" id="downloadBtn">
-                            <i class="fas fa-download"></i> تحميل الصورة
+                            <i class="fas fa-download"></i> Download Image
                         </button>
                         <button class="btn-primary" id="shareBtn">
-                            <i class="fas fa-share-alt"></i> مشاركة النتيجة
+                            <i class="fas fa-share-alt"></i> Share Result
                         </button>
                     </div>
                 </div>
                 
                 <!-- History Section -->
                 <div class="history-section">
-                    <h3 class="history-title"><i class="fas fa-history"></i> السجل الحديث</h3>
+                    <h3 class="history-title"><i class="fas fa-history"></i> Recent History</h3>
                     
                     <div class="history-items">
                         <div class="history-item">
-                            <div class="history-type">رابط ويب</div>
+                            <div class="history-type">Website URL</div>
                             <div class="history-content">https://example.com/product-page</div>
-                            <div class="history-date">اليوم، 10:30 ص</div>
+                            <div class="history-date">Today, 10:30 AM</div>
                         </div>
                         
                         <div class="history-item">
-                            <div class="history-type">نص</div>
-                            <div class="history-content">اجتماع فريق العمل يوم الخميس الساعة 11 صباحًا</div>
-                            <div class="history-date">أمس، 03:45 م</div>
+                            <div class="history-type">Plain Text</div>
+                            <div class="history-content">Team meeting Thursday at 11 AM in conference room</div>
+                            <div class="history-date">Yesterday, 3:45 PM</div>
                         </div>
                         
                         <div class="history-item">
-                            <div class="history-type">واي فاي</div>
-                            <div class="history-content">اسم الشبكة: MyWifi | كلمة السر: SecurePass123</div>
-                            <div class="history-date">٢٠ مايو، ٠٩:١٥ ص</div>
+                            <div class="history-type">Wi-Fi Network</div>
+                            <div class="history-content">Network: MyWifi | Password: SecurePass123</div>
+                            <div class="history-date">May 20, 9:15 AM</div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    
-    <!-- QR Scanner Library -->
-    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
     
     <script>
         // DOM Elements
@@ -701,24 +789,36 @@
         const scanSection = document.getElementById('scanSection');
         const imageSection = document.getElementById('imageSection');
         const previewBox = document.getElementById('previewBox');
+        const previewContent = document.getElementById('previewContent');
         const resultContainer = document.getElementById('resultContainer');
         const resultText = document.getElementById('resultText');
+        const dataTypeSelect = document.getElementById('dataType');
         
         // Buttons
         const generateBtn = document.getElementById('generateBtn');
         const clearBtn = document.getElementById('clearBtn');
         const startCameraBtn = document.getElementById('startCameraBtn');
         const stopCameraBtn = document.getElementById('stopCameraBtn');
-        const captureBtn = document.getElementById('captureBtn');
         const retryScanBtn = document.getElementById('retryScanBtn');
         const scanImageBtn = document.getElementById('scanImageBtn');
         const copyResultBtn = document.getElementById('copyResultBtn');
         const downloadBtn = document.getElementById('downloadBtn');
         const shareBtn = document.getElementById('shareBtn');
         
+        // Input groups
+        const urlInputGroup = document.getElementById('urlInputGroup');
+        const socialUsername = document.getElementById('socialUsername');
+        const wifiInputs = document.getElementById('wifiInputs');
+        const vcardInputs = document.getElementById('vcardInputs');
+        const barcodeInput = document.getElementById('barcodeInput');
+        const smsInput = document.getElementById('smsInput');
+        const phoneInput = document.getElementById('phoneInput');
+        
         // Video element
         const video = document.getElementById('video');
         let stream = null;
+        let scanningActive = false;
+        let currentQRCode = null;
         
         // Mode selection
         modeSelect.addEventListener('change', function() {
@@ -729,7 +829,7 @@
             scanSection.style.display = 'none';
             imageSection.style.display = 'none';
             resultContainer.style.display = 'none';
-            previewBox.style.display = 'flex';
+            previewContent.innerHTML = '<div class="preview-placeholder"><i class="fas fa-qrcode"></i><h3>Scan result or generated code will appear here</h3><p>Use the settings on the left to generate or scan a code</p></div>';
             
             // Show selected section
             if (mode === 'generate') {
@@ -746,6 +846,41 @@
             }
         });
         
+        // Data type selection
+        dataTypeSelect.addEventListener('change', function() {
+            const type = this.value;
+            
+            // Hide all input groups
+            urlInputGroup.style.display = 'none';
+            socialUsername.style.display = 'none';
+            wifiInputs.style.display = 'none';
+            vcardInputs.style.display = 'none';
+            barcodeInput.style.display = 'none';
+            smsInput.style.display = 'none';
+            phoneInput.style.display = 'none';
+            
+            // Show relevant input group
+            if (type === 'url' || type === 'text') {
+                urlInputGroup.style.display = 'block';
+                document.querySelector('#urlInputGroup label').textContent = 
+                    type === 'url' ? 'Website URL:' : 'Text Content:';
+                document.getElementById('urlInput').placeholder = 
+                    type === 'url' ? 'https://example.com' : 'Enter your text here';
+            } else if (type === 'social') {
+                socialUsername.style.display = 'block';
+            } else if (type === 'wifi') {
+                wifiInputs.style.display = 'block';
+            } else if (type === 'vcard') {
+                vcardInputs.style.display = 'block';
+            } else if (type === 'barcode') {
+                barcodeInput.style.display = 'block';
+            } else if (type === 'sms') {
+                smsInput.style.display = 'block';
+            } else if (type === 'contact') {
+                phoneInput.style.display = 'block';
+            }
+        });
+        
         // Camera functionality
         startCameraBtn.addEventListener('click', async function() {
             try {
@@ -754,16 +889,16 @@
                 });
                 
                 video.srcObject = stream;
-                video.play();
+                await video.play();
                 
                 startCameraBtn.style.display = 'none';
                 stopCameraBtn.style.display = 'inline-block';
-                captureBtn.style.display = 'inline-block';
                 
                 // Start scanning for QR codes
+                scanningActive = true;
                 scanQRCode();
             } catch (err) {
-                showNotification('خطأ في الوصول إلى الكاميرا: ' + err.message);
+                showNotification('Camera access error: ' + err.message);
             }
         });
         
@@ -778,7 +913,7 @@
             video.srcObject = null;
             startCameraBtn.style.display = 'inline-block';
             stopCameraBtn.style.display = 'none';
-            captureBtn.style.display = 'none';
+            scanningActive = false;
         }
         
         // QR Scanning
@@ -799,96 +934,146 @@
                     
                     if (code) {
                         showResult(code.data);
+                        stopCamera();
+                        retryScanBtn.style.display = 'inline-block';
                     }
                 }
                 
-                requestAnimationFrame(tick);
+                if (scanningActive) {
+                    requestAnimationFrame(tick);
+                }
             }
             
             tick();
         }
         
-        // Capture image from camera
-        captureBtn.addEventListener('click', function() {
-            const canvas = document.createElement('canvas');
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            
-            const context = canvas.getContext('2d');
-            context.drawImage(video, 0, 0, canvas.width, canvas.height);
-            
-            // Show captured image in preview
-            previewBox.style.display = 'none';
-            previewBox.innerHTML = '';
-            
-            const img = document.createElement('img');
-            img.src = canvas.toDataURL('image/png');
-            img.style.width = '100%';
-            img.style.borderRadius = '15px';
-            previewBox.appendChild(img);
-            
-            // Process the image
-            const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-            const code = jsQR(imageData.data, imageData.width, imageData.height);
-            
-            if (code) {
-                showResult(code.data);
-            } else {
-                showNotification('لم يتم العثور على رمز QR في الصورة');
-                retryScanBtn.style.display = 'inline-block';
-            }
-        });
-        
         // Retry scanning
         retryScanBtn.addEventListener('click', function() {
-            previewBox.style.display = 'flex';
-            previewBox.innerHTML = '<div class="preview-placeholder"><i class="fas fa-qrcode"></i><h3>جاري إعادة المسح...</h3></div>';
+            previewContent.innerHTML = '<div class="preview-placeholder"><i class="fas fa-qrcode"></i><h3>Resuming scan...</h3></div>';
             resultContainer.style.display = 'none';
             retryScanBtn.style.display = 'none';
-            scanQRCode();
+            startCameraBtn.click();
         });
         
         // Generate QR code
         generateBtn.addEventListener('click', function() {
-            const data = document.getElementById('urlInput').value;
-            if (!data) {
-                showNotification('الرجاء إدخال بيانات للرمز');
-                return;
+            const type = dataTypeSelect.value;
+            let data = '';
+            
+            // Get data based on type
+            if (type === 'url' || type === 'text') {
+                data = document.getElementById('urlInput').value;
+                if (!data) {
+                    showNotification('Please enter data for the code');
+                    return;
+                }
+            } else if (type === 'social') {
+                const username = document.getElementById('socialInput').value;
+                const platform = document.getElementById('socialPlatform').value;
+                
+                if (!username) {
+                    showNotification('Please enter a username');
+                    return;
+                }
+                
+                // Create platform-specific URLs
+                const platformUrls = {
+                    'facebook': `https://facebook.com/${username}`,
+                    'instagram': `https://instagram.com/${username}`,
+                    'twitter': `https://twitter.com/${username}`,
+                    'linkedin': `https://linkedin.com/in/${username}`,
+                    'tiktok': `https://tiktok.com/@${username}`
+                };
+                
+                data = platformUrls[platform] || `https://${platform}.com/${username}`;
+            } else if (type === 'wifi') {
+                const name = document.getElementById('wifiName').value;
+                const password = document.getElementById('wifiPassword').value;
+                const security = document.getElementById('wifiSecurity').value;
+                
+                if (!name) {
+                    showNotification('Please enter a network name');
+                    return;
+                }
+                
+                data = `WIFI:T:${security};S:${name};P:${password};;`;
+            } else if (type === 'vcard') {
+                const name = document.getElementById('vcardName').value;
+                const phone = document.getElementById('vcardPhone').value;
+                const email = document.getElementById('vcardEmail').value;
+                
+                if (!name || !phone) {
+                    showNotification('Please enter name and phone number');
+                    return;
+                }
+                
+                data = `BEGIN:VCARD\nVERSION:3.0\nFN:${name}\nTEL:${phone}\nEMAIL:${email}\nEND:VCARD`;
+            } else if (type === 'barcode') {
+                data = document.getElementById('barcodeData').value;
+                if (!data) {
+                    showNotification('Please enter barcode data');
+                    return;
+                }
+            } else if (type === 'sms') {
+                const number = document.getElementById('smsNumber').value;
+                const message = document.getElementById('smsMessage').value;
+                
+                if (!number) {
+                    showNotification('Please enter a phone number');
+                    return;
+                }
+                
+                data = `SMSTO:${number}:${message || ''}`;
+            } else if (type === 'contact') {
+                data = `tel:${document.getElementById('phoneNumber').value}`;
+                if (!data || data === 'tel:') {
+                    showNotification('Please enter a phone number');
+                    return;
+                }
             }
             
-            // Simulate QR generation
-            previewBox.style.display = 'none';
-            previewBox.innerHTML = '';
+            // Generate QR code
+            const qrColor = document.getElementById('qrColor').value || '#000000';
+            const bgColor = document.getElementById('bgColor').value || '#FFFFFF';
             
-            const canvas = document.createElement('canvas');
-            canvas.width = 300;
-            canvas.height = 300;
+            // Clear previous QR code
+            previewContent.innerHTML = '';
             
-            const ctx = canvas.getContext('2d');
-            ctx.fillStyle = document.getElementById('bgColor').value || '#FFFFFF';
-            ctx.fillRect(0, 0, 300, 300);
+            // Create container for QR code
+            const qrContainer = document.createElement('div');
+            qrContainer.id = 'qr-container';
+            previewContent.appendChild(qrContainer);
             
-            ctx.fillStyle = document.getElementById('qrColor').value || '#000000';
-            ctx.font = 'bold 20px Arial';
-            ctx.textAlign = 'center';
-            ctx.fillText('رمز تجريبي', 150, 150);
+            // Generate new QR code
+            currentQRCode = new QRCode(qrContainer, {
+                text: data,
+                width: 300,
+                height: 300,
+                colorDark: qrColor,
+                colorLight: bgColor,
+                correctLevel: QRCode.CorrectLevel.H
+            });
             
-            // Draw QR code pattern (simulated)
-            ctx.fillRect(50, 50, 200, 200);
-            ctx.fillStyle = '#FFFFFF';
-            ctx.fillRect(70, 70, 160, 160);
-            ctx.fillStyle = document.getElementById('qrColor').value || '#000000';
-            ctx.fillRect(90, 90, 120, 120);
-            
-            previewBox.appendChild(canvas);
+            // Display the QR code
+            qrContainer.querySelector('canvas').classList.add('qr-preview');
             showResult(data);
         });
         
         // Clear button
         clearBtn.addEventListener('click', function() {
             document.getElementById('urlInput').value = '';
-            previewBox.style.display = 'flex';
-            previewBox.innerHTML = '<div class="preview-placeholder"><i class="fas fa-qrcode"></i><h3>ستظهر نتيجة المسح أو الرمز المولد هنا</h3></div>';
+            document.getElementById('socialInput').value = '';
+            document.getElementById('wifiName').value = '';
+            document.getElementById('wifiPassword').value = '';
+            document.getElementById('vcardName').value = '';
+            document.getElementById('vcardPhone').value = '';
+            document.getElementById('vcardEmail').value = '';
+            document.getElementById('barcodeData').value = '';
+            document.getElementById('smsNumber').value = '';
+            document.getElementById('smsMessage').value = '';
+            document.getElementById('phoneNumber').value = '';
+            
+            previewContent.innerHTML = '<div class="preview-placeholder"><i class="fas fa-qrcode"></i><h3>Scan result or generated code will appear here</h3><p>Use the settings on the left to generate or scan a code</p></div>';
             resultContainer.style.display = 'none';
         });
         
@@ -896,51 +1081,96 @@
         function showResult(data) {
             resultText.textContent = data;
             resultContainer.style.display = 'block';
-            previewBox.style.display = 'none';
-            
-            // Add to history
-            addToHistory('رمز ممسوح', data);
         }
         
         // Copy result
         copyResultBtn.addEventListener('click', function() {
             navigator.clipboard.writeText(resultText.textContent)
                 .then(() => {
-                    showNotification('تم نسخ النتيجة بنجاح!');
+                    showNotification('Result copied to clipboard!');
                 })
                 .catch(err => {
-                    showNotification('خطأ في النسخ: ' + err.message);
+                    showNotification('Copy error: ' + err.message);
                 });
         });
         
         // Download result
         downloadBtn.addEventListener('click', function() {
-            showNotification('تم تحميل الصورة بنجاح!');
-            // In a real app, this would download the QR code image
+            const canvas = document.querySelector('#qr-container canvas');
+            if (canvas) {
+                const link = document.createElement('a');
+                link.download = 'qrcode.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                showNotification('Image downloaded successfully!');
+            } else {
+                showNotification('No QR code to download');
+            }
         });
         
         // Share result
         shareBtn.addEventListener('click', async function() {
             try {
-                if (navigator.share) {
-                    await navigator.share({
-                        title: 'نتيجة مسح رمز QR',
-                        text: resultText.textContent,
-                        url: window.location.href
+                const canvas = document.querySelector('#qr-container canvas');
+                if (canvas && navigator.share) {
+                    canvas.toBlob(async (blob) => {
+                        const file = new File([blob], 'qrcode.png', { type: 'image/png' });
+                        
+                        await navigator.share({
+                            title: 'QR Code',
+                            text: resultText.textContent,
+                            files: [file]
+                        });
                     });
                 } else {
-                    showNotification('المشاركة غير مدعومة في هذا المتصفح');
+                    showNotification('Web Share not supported in this browser');
                 }
             } catch (err) {
-                showNotification('حدث خطأ أثناء المشاركة: ' + err.message);
+                showNotification('Sharing error: ' + err.message);
             }
         });
         
-        // Add to history
-        function addToHistory(type, content) {
-            // In a real app, this would save to localStorage
-            console.log('Added to history:', type, content);
-        }
+        // Scan image
+        scanImageBtn.addEventListener('click', function() {
+            const fileInput = document.getElementById('imageFile');
+            if (!fileInput.files || !fileInput.files[0]) {
+                showNotification('Please select an image file');
+                return;
+            }
+            
+            const file = fileInput.files[0];
+            const img = new Image();
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                img.src = e.target.result;
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, img.width, img.height);
+                    
+                    const imageData = ctx.getImageData(0, 0, img.width, img.height);
+                    const code = jsQR(imageData.data, img.width, img.height);
+                    
+                    if (code) {
+                        // Show image in preview
+                        previewContent.innerHTML = '';
+                        const imgElement = document.createElement('img');
+                        imgElement.src = img.src;
+                        imgElement.classList.add('qr-preview');
+                        previewContent.appendChild(imgElement);
+                        
+                        showResult(code.data);
+                    } else {
+                        showNotification('No QR code found in the image');
+                    }
+                };
+            };
+            
+            reader.readAsDataURL(file);
+        });
         
         // Show notification
         function showNotification(message) {

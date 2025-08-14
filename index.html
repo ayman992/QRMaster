@@ -366,6 +366,9 @@
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
             margin-top: 30px;
+            background: rgba(0, 0, 0, 0.15);
+            padding: 25px;
+            border-radius: 20px;
         }
         
         .feature-card {
@@ -529,6 +532,31 @@
         .social-selector select {
             margin-bottom: 0;
         }
+        
+        .trust-banner {
+            background: rgba(76, 201, 240, 0.15);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 25px;
+            border: 1px solid rgba(76, 201, 240, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .trust-banner i {
+            font-size: 2rem;
+            color: var(--success);
+        }
+        
+        .trust-content h3 {
+            margin-bottom: 8px;
+        }
+        
+        .trust-content p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
     </style>
 </head>
 <body>
@@ -691,6 +719,15 @@
                     </div>
                 </div>
                 
+                <!-- Trust Banner -->
+                <div class="trust-banner">
+                    <i class="fas fa-shield-alt"></i>
+                    <div class="trust-content">
+                        <h3>Secure & Trusted</h3>
+                        <p>All processing happens directly on your device - no data is sent to external servers. Your privacy is guaranteed.</p>
+                    </div>
+                </div>
+                
                 <!-- Features Section -->
                 <div class="features-grid">
                     <div class="feature-card">
@@ -711,10 +748,18 @@
                     
                     <div class="feature-card">
                         <div class="feature-icon">
-                            <i class="fas fa-shield-alt"></i>
+                            <i class="fas fa-mobile-alt"></i>
                         </div>
-                        <h3 class="feature-title">Secure & Reliable</h3>
-                        <p class="feature-desc">No tracking or ads - just a clean, secure user experience</p>
+                        <h3 class="feature-title">Mobile Optimized</h3>
+                        <p class="feature-desc">Works perfectly on all mobile devices with full feature support</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-history"></i>
+                        </div>
+                        <h3 class="feature-title">Scan History</h3>
+                        <p class="feature-desc">Keep track of your recent scans and generated codes</p>
                     </div>
                 </div>
             </div>
@@ -1102,7 +1147,7 @@
                 link.download = 'qrcode.png';
                 link.href = canvas.toDataURL('image/png');
                 link.click();
-                showNotification('Image downloaded successfully!');
+                showNotification('QR Code downloaded successfully!');
             } else {
                 showNotification('No QR code to download');
             }
@@ -1112,18 +1157,58 @@
         shareBtn.addEventListener('click', async function() {
             try {
                 const canvas = document.querySelector('#qr-container canvas');
-                if (canvas && navigator.share) {
-                    canvas.toBlob(async (blob) => {
+                if (canvas) {
+                    // Convert canvas to blob
+                    canvas.toBlob(async function(blob) {
+                        if (!blob) return;
+                        
                         const file = new File([blob], 'qrcode.png', { type: 'image/png' });
                         
-                        await navigator.share({
-                            title: 'QR Code',
-                            text: resultText.textContent,
-                            files: [file]
-                        });
-                    });
+                        // Check if Web Share API is available
+                        if (navigator.share) {
+                            try {
+                                await navigator.share({
+                                    title: 'QR Code',
+                                    text: 'Check out this QR code I created:',
+                                    files: [file]
+                                });
+                            } catch (err) {
+                                showNotification('Sharing was cancelled');
+                            }
+                        } else {
+                            // Fallback for browsers without Web Share API
+                            const url = URL.createObjectURL(blob);
+                            const link = document.createElement('a');
+                            link.href = url;
+                            link.download = 'qrcode.png';
+                            document.body.appendChild(link);
+                            link.click();
+                            document.body.removeChild(link);
+                            URL.revokeObjectURL(url);
+                            showNotification('Image downloaded instead (sharing not supported)');
+                        }
+                    }, 'image/png');
                 } else {
-                    showNotification('Web Share not supported in this browser');
+                    // Fallback for sharing text
+                    if (navigator.share) {
+                        try {
+                            await navigator.share({
+                                title: 'QR Code Content',
+                                text: resultText.textContent
+                            });
+                        } catch (err) {
+                            showNotification('Sharing was cancelled');
+                        }
+                    } else {
+                        // Copy text to clipboard as fallback
+                        navigator.clipboard.writeText(resultText.textContent)
+                            .then(() => {
+                                showNotification('Content copied to clipboard!');
+                            })
+                            .catch(err => {
+                                showNotification('Failed to copy content');
+                            });
+                    }
                 }
             } catch (err) {
                 showNotification('Sharing error: ' + err.message);

@@ -36,6 +36,7 @@
             min-height: 100vh;
             padding: 20px;
             line-height: 1.6;
+            overflow-x: hidden;
         }
         
         .app {
@@ -563,6 +564,53 @@
             font-size: 0.9rem;
             line-height: 1.6;
         }
+        
+        .file-input-container {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+            margin-bottom: 18px;
+        }
+        
+        .file-input-container input[type="file"] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        
+        .file-input-label {
+            display: block;
+            padding: 14px 18px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #1d3557;
+            border-radius: 14px;
+            text-align: center;
+            cursor: pointer;
+            border: 2px dashed rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .file-input-label:hover {
+            background: rgba(255, 255, 255, 0.85);
+        }
+        
+        .file-input-label i {
+            margin-right: 10px;
+        }
+        
+        .app-footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            color: var(--text-light);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
     </style>
 </head>
 <body>
@@ -756,7 +804,16 @@
                 <!-- Image Scan Section -->
                 <div id="imageSection" style="display: none;">
                     <label>Select an image containing a QR code:</label>
-                    <input type="file" id="imageFile" accept="image/*">
+                    <div class="file-input-container">
+                        <div class="file-input-label">
+                            <i class="fas fa-image"></i> Choose Image File
+                        </div>
+                        <input type="file" id="imageFile" accept="image/*">
+                    </div>
+                    
+                    <div id="imagePreview" style="margin-top: 15px; display: none;">
+                        <img id="selectedImage" class="qr-preview" style="max-width: 100%;">
+                    </div>
                     
                     <div class="actions" style="margin-top: 20px;">
                         <button class="btn-success" id="scanImageBtn">
@@ -839,6 +896,10 @@
                 </div>
             </div>
         </div>
+        
+        <div class="app-footer">
+            <p>QR Master Pro v1.1 - Fixed & Enhanced | All processing happens locally on your device</p>
+        </div>
     </div>
     
     <script>
@@ -878,6 +939,11 @@
         let stream = null;
         let scanningActive = false;
         let currentQRCode = null;
+        
+        // Image scan elements
+        const imageFileInput = document.getElementById('imageFile');
+        const imagePreview = document.getElementById('imagePreview');
+        const selectedImage = document.getElementById('selectedImage');
         
         // Mode selection
         modeSelect.addEventListener('change', function() {
@@ -943,6 +1009,9 @@
         // Camera functionality
         startCameraBtn.addEventListener('click', async function() {
             try {
+                // Show loading indicator
+                previewContent.innerHTML = '<div class="loading"><div class="loader"></div></div>';
+                
                 stream = await navigator.mediaDevices.getUserMedia({ 
                     video: { facingMode: "environment" } 
                 });
@@ -956,8 +1025,12 @@
                 // Start scanning for QR codes
                 scanningActive = true;
                 scanQRCode();
+                
+                // Restore preview placeholder
+                previewContent.innerHTML = '<div class="preview-placeholder"><i class="fas fa-camera"></i><h3>Camera is active</h3><p>Point your camera at a QR code to scan it</p></div>';
             } catch (err) {
                 showNotification('Camera access error: ' + err.message);
+                previewContent.innerHTML = '<div class="preview-placeholder"><i class="fas fa-video-slash"></i><h3>Camera Error</h3><p>Could not access camera: ' + err.message + '</p></div>';
             }
         });
         
@@ -1008,7 +1081,7 @@
         
         // Retry scanning
         retryScanBtn.addEventListener('click', function() {
-            previewContent.innerHTML = '<div class="preview-placeholder"><i class="fas fa-qrcode"></i><h3>Resuming scan...</h3></div>';
+            previewContent.innerHTML = '<div class="preview-placeholder"><i class="fas fa-redo"></i><h3>Resuming scan...</h3></div>';
             resultContainer.style.display = 'none';
             retryScanBtn.style.display = 'none';
             startCameraBtn.click();
@@ -1096,26 +1169,35 @@
             const bgColor = document.getElementById('bgColor').value || '#FFFFFF';
             
             // Clear previous QR code
-            previewContent.innerHTML = '';
+            previewContent.innerHTML = '<div class="loading"><div class="loader"></div></div>';
             
-            // Create container for QR code
-            const qrContainer = document.createElement('div');
-            qrContainer.id = 'qr-container';
-            previewContent.appendChild(qrContainer);
-            
-            // Generate new QR code
-            currentQRCode = new QRCode(qrContainer, {
-                text: data,
-                width: 280,
-                height: 280,
-                colorDark: qrColor,
-                colorLight: bgColor,
-                correctLevel: QRCode.CorrectLevel.H
-            });
-            
-            // Display the QR code
-            qrContainer.querySelector('canvas').classList.add('qr-preview');
-            showResult(data);
+            // Give a small delay to show loading indicator
+            setTimeout(() => {
+                // Create container for QR code
+                const qrContainer = document.createElement('div');
+                qrContainer.id = 'qr-container';
+                previewContent.innerHTML = '';
+                previewContent.appendChild(qrContainer);
+                
+                // Generate new QR code
+                try {
+                    currentQRCode = new QRCode(qrContainer, {
+                        text: data,
+                        width: 280,
+                        height: 280,
+                        colorDark: qrColor,
+                        colorLight: bgColor,
+                        correctLevel: QRCode.CorrectLevel.H
+                    });
+                    
+                    // Display the QR code
+                    qrContainer.querySelector('canvas').classList.add('qr-preview');
+                    showResult(data);
+                } catch (error) {
+                    showNotification('Error generating QR code: ' + error.message);
+                    previewContent.innerHTML = '<div class="preview-placeholder"><i class="fas fa-exclamation-circle"></i><h3>Generation Error</h3><p>Could not generate QR code</p></div>';
+                }
+            }, 300);
         });
         
         // Clear button
@@ -1134,6 +1216,7 @@
             
             previewContent.innerHTML = '<div class="preview-placeholder"><i class="fas fa-qrcode"></i><h3>Scan result or generated code will appear here</h3><p>Use the settings below to generate or scan a code</p></div>';
             resultContainer.style.display = 'none';
+            imagePreview.style.display = 'none';
         });
         
         // Show result
@@ -1164,14 +1247,9 @@
                     link.href = canvas.toDataURL('image/png');
                     
                     // Create a temporary event to trigger the download
-                    const clickEvent = new MouseEvent('click', {
-                        bubbles: true,
-                        cancelable: true,
-                        view: window
-                    });
-                    
-                    // Dispatch the event
-                    link.dispatchEvent(clickEvent);
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
                     
                     // Show success notification
                     showNotification('QR Code downloaded successfully!');
@@ -1231,17 +1309,38 @@
             }
         });
         
-        // Scan image
-        scanImageBtn.addEventListener('click', function() {
-            const fileInput = document.getElementById('imageFile');
-            if (!fileInput.files || !fileInput.files[0]) {
+        // Image selection preview
+        imageFileInput.addEventListener('change', function() {
+            const file = this.files[0];
+            if (!file) return;
+            
+            // Check if file is an image
+            if (!file.type.match('image.*')) {
                 showNotification('Please select an image file');
                 return;
             }
             
-            const file = fileInput.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                selectedImage.src = e.target.result;
+                imagePreview.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        });
+        
+        // Scan image
+        scanImageBtn.addEventListener('click', function() {
+            const file = imageFileInput.files[0];
+            if (!file) {
+                showNotification('Please select an image file');
+                return;
+            }
+            
             const img = new Image();
             const reader = new FileReader();
+            
+            // Show loading indicator
+            previewContent.innerHTML = '<div class="loading"><div class="loader"></div></div>';
             
             reader.onload = function(e) {
                 img.src = e.target.result;
@@ -1266,8 +1365,14 @@
                         showResult(code.data);
                     } else {
                         showNotification('No QR code found in the image');
+                        previewContent.innerHTML = '<div class="preview-placeholder"><i class="fas fa-search"></i><h3>No QR Code Found</h3><p>We couldn\'t find a QR code in this image</p></div>';
                     }
                 };
+            };
+            
+            reader.onerror = function() {
+                showNotification('Error reading image file');
+                previewContent.innerHTML = '<div class="preview-placeholder"><i class="fas fa-exclamation-circle"></i><h3>Image Error</h3><p>Could not read the selected image</p></div>';
             };
             
             reader.readAsDataURL(file);
@@ -1295,6 +1400,12 @@
         
         // Initialize
         document.getElementById('genSection').style.display = 'block';
+        
+        // Add file input name display
+        imageFileInput.addEventListener('change', function() {
+            const fileName = this.files[0] ? this.files[0].name : 'No file selected';
+            document.querySelector('.file-input-label').innerHTML = `<i class="fas fa-image"></i> ${fileName}`;
+        });
     </script>
 </body>
 </html>

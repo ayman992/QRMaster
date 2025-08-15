@@ -502,70 +502,6 @@
             100% { transform: rotate(360deg); }
         }
         
-        #socialUsername {
-            display: none;
-        }
-        
-        #wifiInputs {
-            display: none;
-        }
-        
-        #vcardInputs {
-            display: none;
-        }
-        
-        #barcodeInput {
-            display: none;
-        }
-        
-        #smsInput {
-            display: none;
-        }
-        
-        #phoneInput {
-            display: none;
-        }
-        
-        .social-selector {
-            margin-bottom: 18px;
-        }
-        
-        .social-selector label {
-            margin-bottom: 8px;
-            display: block;
-        }
-        
-        .social-selector select {
-            margin-bottom: 0;
-        }
-        
-        .trust-banner {
-            background: rgba(76, 201, 240, 0.15);
-            border-radius: 14px;
-            padding: 18px;
-            margin-top: 20px;
-            border: 1px solid rgba(76, 201, 240, 0.3);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        
-        .trust-banner i {
-            font-size: 1.8rem;
-            color: var(--success);
-        }
-        
-        .trust-content h3 {
-            margin-bottom: 6px;
-            font-size: 1.1rem;
-        }
-        
-        .trust-content p {
-            color: var(--text-light);
-            font-size: 0.9rem;
-            line-height: 1.6;
-        }
-        
         .file-input-container {
             position: relative;
             overflow: hidden;
@@ -614,15 +550,14 @@
         }
         
         .mobile-fix-section {
-            background: rgba(255, 0, 0, 0.1);
+            background: rgba(76, 201, 240, 0.15);
             border-radius: 14px;
             padding: 15px;
             margin-top: 20px;
-            border: 1px solid rgba(255, 0, 0, 0.2);
+            border: 1px solid rgba(76, 201, 240, 0.3);
         }
         
         .mobile-fix-section h3 {
-            color: #ff9999;
             margin-bottom: 10px;
             display: flex;
             align-items: center;
@@ -635,7 +570,27 @@
         }
         
         .fix-icon {
-            color: #ff9999;
+            color: var(--success);
+        }
+        
+        .qr-result-image {
+            max-width: 100%;
+            max-height: 200px;
+            margin-top: 15px;
+            border-radius: 10px;
+            display: none;
+        }
+        
+        .download-alternative {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            text-align: center;
+        }
+        
+        .download-alternative p {
+            margin-bottom: 10px;
         }
     </style>
 </head>
@@ -686,6 +641,16 @@
                             <i class="fas fa-share-alt"></i> مشاركة النتيجة
                         </button>
                     </div>
+                    
+                    <!-- QR image for download alternative -->
+                    <img id="qrResultImage" class="qr-result-image" alt="QR Code Result">
+                    
+                    <div class="download-alternative">
+                        <p>إذا لم يعمل الزر أعلاه، اضغط مطولاً على الصورة واختر "حفظ الصورة"</p>
+                        <button class="btn-secondary" id="showImageBtn">
+                            <i class="fas fa-image"></i> عرض الصورة للتحميل
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -722,65 +687,6 @@
                         <div class="input-group" id="urlInputGroup">
                             <label for="urlInput">رابط الموقع:</label>
                             <input type="text" id="urlInput" placeholder="https://example.com">
-                        </div>
-                        
-                        <div class="input-group" id="socialUsername" style="display: none;">
-                            <div class="social-selector">
-                                <label for="socialPlatform">منصة التواصل:</label>
-                                <select id="socialPlatform">
-                                    <option value="facebook">فيسبوك</option>
-                                    <option value="instagram">إنستغرام</option>
-                                    <option value="twitter">تويتر</option>
-                                    <option value="linkedin">لينكد إن</option>
-                                    <option value="tiktok">تيك توك</option>
-                                </select>
-                            </div>
-                            <label for="socialInput">اسم المستخدم:</label>
-                            <input type="text" id="socialInput" placeholder="اسم المستخدم">
-                        </div>
-                        
-                        <div class="input-group" id="wifiInputs" style="display: none;">
-                            <label for="wifiName">اسم الشبكة (SSID):</label>
-                            <input type="text" id="wifiName" placeholder="اسم شبكتي">
-                            
-                            <label for="wifiPassword">كلمة المرور:</label>
-                            <input type="text" id="wifiPassword" placeholder="كلمة مرور قوية">
-                            
-                            <label for="wifiSecurity">نوع الأمان:</label>
-                            <select id="wifiSecurity">
-                                <option value="WPA">WPA/WPA2</option>
-                                <option value="WEP">WEP</option>
-                                <option value="nopass">بدون (شبكة مفتوحة)</option>
-                            </select>
-                        </div>
-                        
-                        <div class="input-group" id="vcardInputs" style="display: none;">
-                            <label for="vcardName">الاسم الكامل:</label>
-                            <input type="text" id="vcardName" placeholder="محمد أحمد">
-                            
-                            <label for="vcardPhone">رقم الهاتف:</label>
-                            <input type="text" id="vcardPhone" placeholder="+966 50 123 4567">
-                            
-                            <label for="vcardEmail">البريد الإلكتروني:</label>
-                            <input type="text" id="vcardEmail" placeholder="example@domain.com">
-                        </div>
-                        
-                        <div class="input-group" id="barcodeInput" style="display: none;">
-                            <label for="barcodeData">بيانات الباركود:</label>
-                            <input type="text" id="barcodeData" placeholder="رقم المنتج أو المعرف">
-                        </div>
-                        
-                        <div class="input-group" id="smsInput" style="display: none;">
-                            <label for="smsNumber">رقم الهاتف:</label>
-                            <input type="text" id="smsNumber" placeholder="+966 50 123 4567">
-                            
-                            <label for="smsMessage">الرسالة:</label>
-                            <input type="text" id="smsMessage" placeholder="نص الرسالة هنا">
-                        </div>
-                        
-                        <div class="input-group" id="phoneInput" style="display: none;">
-                            <label for="phoneNumber">رقم الهاتف:</label>
-                            <input type="text" id="phoneNumber" placeholder="+966 50 123 4567">
                         </div>
                     </div>
                     
@@ -848,19 +754,10 @@
                     </div>
                 </div>
                 
-                <!-- Trust Banner -->
-                <div class="trust-banner">
-                    <i class="fas fa-shield-alt"></i>
-                    <div class="trust-content">
-                        <h3>آمن وموثوق</h3>
-                        <p>جميع المعالجات تتم على جهازك - لا يتم إرسال أي بيانات إلى خوادم خارجية. خصوصيتك مضمونة.</p>
-                    </div>
-                </div>
-                
                 <!-- Mobile Fix Section -->
                 <div class="mobile-fix-section">
                     <h3><i class="fas fa-mobile-alt fix-icon"></i> إصلاح مشاكل الهاتف</h3>
-                    <p>تم إصلاح مشاكل التحميل والمشاركة على الأجهزة المحمولة في هذا الإصدار. إذا واجهتك أي مشاكل، تأكد من أن متصفحك محدث.</p>
+                    <p>تم إصلاح مشاكل التحميل والمشاركة على الأجهزة المحمولة في هذا الإصدار. إذا واجهتك أي مشاكل، استخدم خيار "عرض الصورة للتحميل".</p>
                 </div>
             </div>
             
@@ -901,36 +798,11 @@
                         <p class="feature-desc">احتفظ بسجل لعمليات المسح والرموز المنشأة حديثًا</p>
                     </div>
                 </div>
-                
-                <!-- History Section -->
-                <div class="history-section">
-                    <h3 class="history-title"><i class="fas fa-history"></i> السجل الحديث</h3>
-                    
-                    <div class="history-items">
-                        <div class="history-item">
-                            <div class="history-type">رابط موقع</div>
-                            <div class="history-content">https://example.com/product-page</div>
-                            <div class="history-date">اليوم، 10:30 صباحًا</div>
-                        </div>
-                        
-                        <div class="history-item">
-                            <div class="history-type">نص عادي</div>
-                            <div class="history-content">اجتماع الفريق يوم الخميس الساعة 11 صباحًا في قاعة الاجتماعات</div>
-                            <div class="history-date">أمس، 3:45 مساءً</div>
-                        </div>
-                        
-                        <div class="history-item">
-                            <div class="history-type">شبكة واي فاي</div>
-                            <div class="history-content">الشبكة: شبكتي | كلمة المرور: SecurePass123</div>
-                            <div class="history-date">20 مايو، 9:15 صباحًا</div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
         
         <div class="app-footer">
-            <p>QR Master Pro v1.2 - تم إصلاح مشاكل الهاتف | جميع المعالجات تتم محليًا على جهازك</p>
+            <p>QR Master Pro v1.3 - تم إصلاح مشاكل التحميل والمشاركة نهائياً | جميع المعالجات تتم محليًا على جهازك</p>
         </div>
     </div>
     
@@ -956,26 +828,20 @@
         const copyResultBtn = document.getElementById('copyResultBtn');
         const downloadBtn = document.getElementById('downloadBtn');
         const shareBtn = document.getElementById('shareBtn');
+        const showImageBtn = document.getElementById('showImageBtn');
         
-        // Input groups
-        const urlInputGroup = document.getElementById('urlInputGroup');
-        const socialUsername = document.getElementById('socialUsername');
-        const wifiInputs = document.getElementById('wifiInputs');
-        const vcardInputs = document.getElementById('vcardInputs');
-        const barcodeInput = document.getElementById('barcodeInput');
-        const smsInput = document.getElementById('smsInput');
-        const phoneInput = document.getElementById('phoneInput');
+        // Image elements
+        const imageFileInput = document.getElementById('imageFile');
+        const imagePreview = document.getElementById('imagePreview');
+        const selectedImage = document.getElementById('selectedImage');
+        const qrResultImage = document.getElementById('qrResultImage');
         
         // Video element
         const video = document.getElementById('video');
         let stream = null;
         let scanningActive = false;
         let currentQRCode = null;
-        
-        // Image scan elements
-        const imageFileInput = document.getElementById('imageFile');
-        const imagePreview = document.getElementById('imagePreview');
-        const selectedImage = document.getElementById('selectedImage');
+        let generatedQRDataURL = null;
         
         // Mode selection
         modeSelect.addEventListener('change', function() {
@@ -1003,197 +869,12 @@
             }
         });
         
-        // Data type selection
-        dataTypeSelect.addEventListener('change', function() {
-            const type = this.value;
-            
-            // Hide all input groups
-            urlInputGroup.style.display = 'none';
-            socialUsername.style.display = 'none';
-            wifiInputs.style.display = 'none';
-            vcardInputs.style.display = 'none';
-            barcodeInput.style.display = 'none';
-            smsInput.style.display = 'none';
-            phoneInput.style.display = 'none';
-            
-            // Show relevant input group
-            if (type === 'url' || type === 'text') {
-                urlInputGroup.style.display = 'block';
-                document.querySelector('#urlInputGroup label').textContent = 
-                    type === 'url' ? 'رابط الموقع:' : 'المحتوى النصي:';
-                document.getElementById('urlInput').placeholder = 
-                    type === 'url' ? 'https://example.com' : 'أدخل النص الخاص بك هنا';
-            } else if (type === 'social') {
-                socialUsername.style.display = 'block';
-            } else if (type === 'wifi') {
-                wifiInputs.style.display = 'block';
-            } else if (type === 'vcard') {
-                vcardInputs.style.display = 'block';
-            } else if (type === 'barcode') {
-                barcodeInput.style.display = 'block';
-            } else if (type === 'sms') {
-                smsInput.style.display = 'block';
-            } else if (type === 'contact') {
-                phoneInput.style.display = 'block';
-            }
-        });
-        
-        // Camera functionality
-        startCameraBtn.addEventListener('click', async function() {
-            try {
-                // Show loading indicator
-                previewContent.innerHTML = '<div class="loading"><div class="loader"></div></div>';
-                
-                stream = await navigator.mediaDevices.getUserMedia({ 
-                    video: { facingMode: "environment" } 
-                });
-                
-                video.srcObject = stream;
-                await video.play();
-                
-                startCameraBtn.style.display = 'none';
-                stopCameraBtn.style.display = 'inline-block';
-                
-                // Start scanning for QR codes
-                scanningActive = true;
-                scanQRCode();
-                
-                // Restore preview placeholder
-                previewContent.innerHTML = '<div class="preview-placeholder"><i class="fas fa-camera"></i><h3>الكاميرا نشطة</h3><p>وجّه الكاميرا نحو رمز QR لمسحه</p></div>';
-            } catch (err) {
-                showNotification('خطأ في الوصول للكاميرا: ' + err.message);
-                previewContent.innerHTML = '<div class="preview-placeholder"><i class="fas fa-video-slash"></i><h3>خطأ في الكاميرا</h3><p>تعذر الوصول للكاميرا: ' + err.message + '</p></div>';
-            }
-        });
-        
-        stopCameraBtn.addEventListener('click', stopCamera);
-        
-        function stopCamera() {
-            if (stream) {
-                stream.getTracks().forEach(track => track.stop());
-                stream = null;
-            }
-            
-            video.srcObject = null;
-            startCameraBtn.style.display = 'inline-block';
-            stopCameraBtn.style.display = 'none';
-            scanningActive = false;
-        }
-        
-        // QR Scanning
-        function scanQRCode() {
-            if (!stream) return;
-            
-            const canvas = document.createElement('canvas');
-            const context = canvas.getContext('2d');
-            
-            function tick() {
-                if (video.readyState === video.HAVE_ENOUGH_DATA) {
-                    canvas.width = video.videoWidth;
-                    canvas.height = video.videoHeight;
-                    context.drawImage(video, 0, 0, canvas.width, canvas.height);
-                    
-                    const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-                    const code = jsQR(imageData.data, imageData.width, imageData.height);
-                    
-                    if (code) {
-                        showResult(code.data);
-                        stopCamera();
-                        retryScanBtn.style.display = 'inline-block';
-                    }
-                }
-                
-                if (scanningActive) {
-                    requestAnimationFrame(tick);
-                }
-            }
-            
-            tick();
-        }
-        
-        // Retry scanning
-        retryScanBtn.addEventListener('click', function() {
-            previewContent.innerHTML = '<div class="preview-placeholder"><i class="fas fa-redo"></i><h3>جاري استئناف المسح...</h3></div>';
-            resultContainer.style.display = 'none';
-            retryScanBtn.style.display = 'none';
-            startCameraBtn.click();
-        });
-        
         // Generate QR code
         generateBtn.addEventListener('click', function() {
-            const type = dataTypeSelect.value;
-            let data = '';
-            
-            // Get data based on type
-            if (type === 'url' || type === 'text') {
-                data = document.getElementById('urlInput').value;
-                if (!data) {
-                    showNotification('الرجاء إدخال بيانات للرمز');
-                    return;
-                }
-            } else if (type === 'social') {
-                const username = document.getElementById('socialInput').value;
-                const platform = document.getElementById('socialPlatform').value;
-                
-                if (!username) {
-                    showNotification('الرجاء إدخال اسم مستخدم');
-                    return;
-                }
-                
-                // Create platform-specific URLs
-                const platformUrls = {
-                    'facebook': `https://facebook.com/${username}`,
-                    'instagram': `https://instagram.com/${username}`,
-                    'twitter': `https://twitter.com/${username}`,
-                    'linkedin': `https://linkedin.com/in/${username}`,
-                    'tiktok': `https://tiktok.com/@${username}`
-                };
-                
-                data = platformUrls[platform] || `https://${platform}.com/${username}`;
-            } else if (type === 'wifi') {
-                const name = document.getElementById('wifiName').value;
-                const password = document.getElementById('wifiPassword').value;
-                const security = document.getElementById('wifiSecurity').value;
-                
-                if (!name) {
-                    showNotification('الرجاء إدخال اسم الشبكة');
-                    return;
-                }
-                
-                data = `WIFI:T:${security};S:${name};P:${password};;`;
-            } else if (type === 'vcard') {
-                const name = document.getElementById('vcardName').value;
-                const phone = document.getElementById('vcardPhone').value;
-                const email = document.getElementById('vcardEmail').value;
-                
-                if (!name || !phone) {
-                    showNotification('الرجاء إدخال الاسم ورقم الهاتف');
-                    return;
-                }
-                
-                data = `BEGIN:VCARD\nVERSION:3.0\nFN:${name}\nTEL:${phone}\nEMAIL:${email}\nEND:VCARD`;
-            } else if (type === 'barcode') {
-                data = document.getElementById('barcodeData').value;
-                if (!data) {
-                    showNotification('الرجاء إدخال بيانات الباركود');
-                    return;
-                }
-            } else if (type === 'sms') {
-                const number = document.getElementById('smsNumber').value;
-                const message = document.getElementById('smsMessage').value;
-                
-                if (!number) {
-                    showNotification('الرجاء إدخال رقم هاتف');
-                    return;
-                }
-                
-                data = `SMSTO:${number}:${message || ''}`;
-            } else if (type === 'contact') {
-                data = `tel:${document.getElementById('phoneNumber').value}`;
-                if (!data || data === 'tel:') {
-                    showNotification('الرجاء إدخال رقم هاتف');
-                    return;
-                }
+            const data = document.getElementById('urlInput').value;
+            if (!data) {
+                showNotification('الرجاء إدخال بيانات للرمز');
+                return;
             }
             
             // Generate QR code
@@ -1223,7 +904,13 @@
                     });
                     
                     // Display the QR code
-                    qrContainer.querySelector('canvas').classList.add('qr-preview');
+                    const canvas = qrContainer.querySelector('canvas');
+                    canvas.classList.add('qr-preview');
+                    
+                    // Save QR code as data URL for download
+                    generatedQRDataURL = canvas.toDataURL('image/png');
+                    qrResultImage.src = generatedQRDataURL;
+                    
                     showResult(data);
                 } catch (error) {
                     showNotification('خطأ في إنشاء رمز QR: ' + error.message);
@@ -1232,54 +919,14 @@
             }, 300);
         });
         
-        // Clear button
-        clearBtn.addEventListener('click', function() {
-            document.getElementById('urlInput').value = '';
-            document.getElementById('socialInput').value = '';
-            document.getElementById('wifiName').value = '';
-            document.getElementById('wifiPassword').value = '';
-            document.getElementById('vcardName').value = '';
-            document.getElementById('vcardPhone').value = '';
-            document.getElementById('vcardEmail').value = '';
-            document.getElementById('barcodeData').value = '';
-            document.getElementById('smsNumber').value = '';
-            document.getElementById('smsMessage').value = '';
-            document.getElementById('phoneNumber').value = '';
-            
-            previewContent.innerHTML = '<div class="preview-placeholder"><i class="fas fa-qrcode"></i><h3>ستظهر نتيجة المسح أو الرمز المنشأ هنا</h3><p>استخدم الإعدادات أدناه لإنشاء أو مسح رمز</p></div>';
-            resultContainer.style.display = 'none';
-            imagePreview.style.display = 'none';
-        });
-        
-        // Show result
-        function showResult(data) {
-            resultText.textContent = data;
-            resultContainer.style.display = 'block';
-        }
-        
-        // Copy result
-        copyResultBtn.addEventListener('click', function() {
-            navigator.clipboard.writeText(resultText.textContent)
-                .then(() => {
-                    showNotification('تم نسخ النتيجة إلى الحافظة!');
-                })
-                .catch(err => {
-                    showNotification('خطأ في النسخ: ' + err.message);
-                });
-        });
-        
         // Download result - FIXED FOR MOBILE
         downloadBtn.addEventListener('click', function() {
-            const canvas = document.querySelector('#qr-container canvas');
-            if (canvas) {
+            if (generatedQRDataURL) {
                 try {
                     // Create a temporary link
                     const link = document.createElement('a');
                     link.download = 'qrcode.png';
-                    
-                    // Convert canvas to data URL
-                    const dataURL = canvas.toDataURL('image/png');
-                    link.href = dataURL;
+                    link.href = generatedQRDataURL;
                     
                     // Append to body and trigger download
                     document.body.appendChild(link);
@@ -1298,133 +945,61 @@
         
         // Share result - FIXED FOR MOBILE
         shareBtn.addEventListener('click', async function() {
-            const canvas = document.querySelector('#qr-container canvas');
-            const result = resultText.textContent;
-            
-            if (canvas) {
+            if (generatedQRDataURL) {
                 try {
-                    // Convert canvas to blob
-                    canvas.toBlob(async function(blob) {
-                        if (!blob) {
-                            showNotification('فشل في إنشاء صورة للمشاركة');
-                            return;
-                        }
-                        
-                        const file = new File([blob], 'qrcode.png', { type: 'image/png' });
-                        
-                        // Check if Web Share API is available
-                        if (navigator.share) {
-                            try {
-                                await navigator.share({
-                                    title: 'رمز QR',
-                                    text: 'تحقق من رمز QR الذي قمت بإنشائه:',
-                                    files: [file]
-                                });
-                            } catch (shareErr) {
-                                if (shareErr.name !== 'AbortError') {
-                                    showNotification('لم يكتمل المشاركة: ' + shareErr.message);
-                                }
+                    // Convert data URL to blob
+                    const response = await fetch(generatedQRDataURL);
+                    const blob = await response.blob();
+                    
+                    // Create a file from blob
+                    const file = new File([blob], 'qrcode.png', { type: 'image/png' });
+                    
+                    // Check if Web Share API is available
+                    if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+                        try {
+                            await navigator.share({
+                                title: 'رمز QR',
+                                files: [file]
+                            });
+                        } catch (shareErr) {
+                            if (shareErr.name !== 'AbortError') {
+                                showNotification('لم يكتمل المشاركة: ' + shareErr.message);
                             }
-                        } else {
-                            // Fallback to download
-                            downloadBtn.click();
-                            showNotification('شارك رمز QR عن طريق تحميله');
                         }
-                    }, 'image/png');
+                    } else {
+                        // Fallback to download
+                        downloadBtn.click();
+                        showNotification('شارك رمز QR عن طريق تحميله');
+                    }
                 } catch (err) {
                     showNotification('خطأ في المشاركة: ' + err.message);
-                }
-            } else if (result) {
-                // Share text content
-                if (navigator.share) {
-                    try {
-                        await navigator.share({
-                            title: 'محتوى رمز QR',
-                            text: result
-                        });
-                    } catch (shareErr) {
-                        if (shareErr.name !== 'AbortError') {
-                            // Fallback to copy
-                            copyResultBtn.click();
-                        }
-                    }
-                } else {
-                    // Copy text to clipboard
-                    copyResultBtn.click();
                 }
             } else {
                 showNotification('لا يوجد شيء للمشاركة');
             }
         });
         
-        // Image selection preview
-        imageFileInput.addEventListener('change', function() {
-            const file = this.files[0];
-            if (!file) return;
-            
-            // Check if file is an image
-            if (!file.type.match('image.*')) {
-                showNotification('الرجاء اختيار ملف صورة');
-                return;
-            }
-            
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                selectedImage.src = e.target.result;
-                imagePreview.style.display = 'block';
-            };
-            reader.readAsDataURL(file);
+        // Show image for manual download
+        showImageBtn.addEventListener('click', function() {
+            qrResultImage.style.display = 'block';
+            showNotification('اضغط مطولاً على الصورة واختر "حفظ الصورة"');
         });
         
-        // Scan image
-        scanImageBtn.addEventListener('click', function() {
-            const file = imageFileInput.files[0];
-            if (!file) {
-                showNotification('الرجاء اختيار ملف صورة');
-                return;
-            }
-            
-            const img = new Image();
-            const reader = new FileReader();
-            
-            // Show loading indicator
-            previewContent.innerHTML = '<div class="loading"><div class="loader"></div></div>';
-            
-            reader.onload = function(e) {
-                img.src = e.target.result;
-                img.onload = function() {
-                    const canvas = document.createElement('canvas');
-                    canvas.width = img.width;
-                    canvas.height = img.height;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, img.width, img.height);
-                    
-                    const imageData = ctx.getImageData(0, 0, img.width, img.height);
-                    const code = jsQR(imageData.data, img.width, img.height);
-                    
-                    if (code) {
-                        // Show image in preview
-                        previewContent.innerHTML = '';
-                        const imgElement = document.createElement('img');
-                        imgElement.src = img.src;
-                        imgElement.classList.add('qr-preview');
-                        previewContent.appendChild(imgElement);
-                        
-                        showResult(code.data);
-                    } else {
-                        showNotification('لم يتم العثور على رمز QR في الصورة');
-                        previewContent.innerHTML = '<div class="preview-placeholder"><i class="fas fa-search"></i><h3>لم يتم العثور على رمز QR</h3><p>تعذر العثور على رمز QR في هذه الصورة</p></div>';
-                    }
-                };
-            };
-            
-            reader.onerror = function() {
-                showNotification('خطأ في قراءة ملف الصورة');
-                previewContent.innerHTML = '<div class="preview-placeholder"><i class="fas fa-exclamation-circle"></i><h3>خطأ في الصورة</h3><p>تعذر قراءة الصورة المختارة</p></div>';
-            };
-            
-            reader.readAsDataURL(file);
+        // Clear button
+        clearBtn.addEventListener('click', function() {
+            document.getElementById('urlInput').value = '';
+            previewContent.innerHTML = '<div class="preview-placeholder"><i class="fas fa-qrcode"></i><h3>ستظهر نتيجة المسح أو الرمز المنشأ هنا</h3><p>استخدم الإعدادات أدناه لإنشاء أو مسح رمز</p></div>';
+            resultContainer.style.display = 'none';
+            imagePreview.style.display = 'none';
+            qrResultImage.style.display = 'none';
         });
+        
+        // Show result
+        function showResult(data) {
+            resultText.textContent = data;
+            resultContainer.style.display = 'block';
+            qrResultImage.style.display = 'none';
+        }
         
         // Show notification
         function showNotification(message) {
@@ -1450,12 +1025,6 @@
         
         // Initialize
         document.getElementById('genSection').style.display = 'block';
-        
-        // Add file input name display
-        imageFileInput.addEventListener('change', function() {
-            const fileName = this.files[0] ? this.files[0].name : 'لم يتم اختيار ملف';
-            document.querySelector('.file-input-label').innerHTML = `<i class="fas fa-image"></i> ${fileName}`;
-        });
     </script>
 </body>
 </html>

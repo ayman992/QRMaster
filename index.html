@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QR Master Pro</title>
+    <title>QR Master Pro - الإصدار المحسّن</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
@@ -37,6 +37,7 @@
             padding: 20px;
             line-height: 1.6;
             overflow-x: hidden;
+            direction: rtl;
         }
         
         .app {
@@ -611,6 +612,31 @@
             font-size: 0.9rem;
             border-top: 1px solid rgba(255,255,255,0.1);
         }
+        
+        .mobile-fix-section {
+            background: rgba(255, 0, 0, 0.1);
+            border-radius: 14px;
+            padding: 15px;
+            margin-top: 20px;
+            border: 1px solid rgba(255, 0, 0, 0.2);
+        }
+        
+        .mobile-fix-section h3 {
+            color: #ff9999;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .mobile-fix-section p {
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        
+        .fix-icon {
+            color: #ff9999;
+        }
     </style>
 </head>
 <body>
@@ -621,43 +647,43 @@
                 <h1>QR Master Pro</h1>
             </div>
             <div class="subtitle">
-                The professional solution for generating and scanning QR codes with advanced features and automatic detection.
+                الحل المحترف لإنشاء وقراءة رموز QR مع ميزات متقدمة وكشف تلقائي - الإصدار المحسّن
             </div>
         </header>
 
         <!-- Preview Section at the Top -->
         <div class="preview-section">
             <div class="card">
-                <h2 class="card-title"><i class="fas fa-eye"></i> Preview & Results</h2>
+                <h2 class="card-title"><i class="fas fa-eye"></i> معاينة النتائج</h2>
                 
                 <div id="previewBox">
                     <div id="previewContent">
                         <div class="preview-placeholder">
                             <i class="fas fa-qrcode"></i>
-                            <h3>Scan result or generated code will appear here</h3>
-                            <p>Use the settings below to generate or scan a code</p>
+                            <h3>ستظهر نتيجة المسح أو الرمز المنشأ هنا</h3>
+                            <p>استخدم الإعدادات أدناه لإنشاء أو مسح رمز</p>
                         </div>
                     </div>
                 </div>
                 
                 <div id="resultContainer" style="display: none;">
                     <div class="result-header">
-                        <h3><i class="fas fa-check-circle"></i> QR Code Detected</h3>
+                        <h3><i class="fas fa-check-circle"></i> تم اكتشاف رمز QR</h3>
                         <button class="btn-secondary" id="copyResultBtn">
-                            <i class="fas fa-copy"></i> Copy Result
+                            <i class="fas fa-copy"></i> نسخ النتيجة
                         </button>
                     </div>
                     
                     <div class="result-content" id="resultText">
-                        Result will appear here...
+                        ستظهر النتيجة هنا...
                     </div>
                     
                     <div class="actions">
                         <button class="btn-success" id="downloadBtn">
-                            <i class="fas fa-download"></i> Download Image
+                            <i class="fas fa-download"></i> تحميل الصورة
                         </button>
                         <button class="btn-primary" id="shareBtn">
-                            <i class="fas fa-share-alt"></i> Share Result
+                            <i class="fas fa-share-alt"></i> مشاركة النتيجة
                         </button>
                     </div>
                 </div>
@@ -667,114 +693,114 @@
         <!-- Controls Section -->
         <div class="grid">
             <div class="card">
-                <h2 class="card-title"><i class="fas fa-cogs"></i> Application Settings</h2>
+                <h2 class="card-title"><i class="fas fa-cogs"></i> إعدادات التطبيق</h2>
                 
                 <div class="mode-selector">
-                    <label for="mode">Select Mode:</label>
+                    <label for="mode">اختر الوضع:</label>
                     <select id="mode">
-                        <option value="generate">Generate QR/Barcode</option>
-                        <option value="scan">Scan QR with Camera</option>
-                        <option value="image">Scan QR from Image</option>
+                        <option value="generate">إنشاء رمز QR/باركود</option>
+                        <option value="scan">مسح رمز QR بالكاميرا</option>
+                        <option value="image">مسح رمز QR من صورة</option>
                     </select>
                 </div>
                 
                 <!-- Generate Section -->
                 <div id="genSection">
-                    <label for="dataType">Data Type:</label>
+                    <label for="dataType">نوع البيانات:</label>
                     <select id="dataType">
-                        <option value="url">Website URL</option>
-                        <option value="text">Plain Text</option>
-                        <option value="contact">Contact Information</option>
-                        <option value="wifi">Wi-Fi Network</option>
-                        <option value="sms">SMS Message</option>
-                        <option value="vcard">vCard</option>
-                        <option value="social">Social Media Profile</option>
-                        <option value="barcode">Barcode</option>
+                        <option value="url">رابط موقع</option>
+                        <option value="text">نص عادي</option>
+                        <option value="contact">معلومات الاتصال</option>
+                        <option value="wifi">شبكة واي فاي</option>
+                        <option value="sms">رسالة SMS</option>
+                        <option value="vcard">بطاقة vCard</option>
+                        <option value="social">حساب وسائل التواصل</option>
+                        <option value="barcode">باركود</option>
                     </select>
                     
                     <div id="dataInputs">
                         <div class="input-group" id="urlInputGroup">
-                            <label for="urlInput">Website URL:</label>
+                            <label for="urlInput">رابط الموقع:</label>
                             <input type="text" id="urlInput" placeholder="https://example.com">
                         </div>
                         
                         <div class="input-group" id="socialUsername" style="display: none;">
                             <div class="social-selector">
-                                <label for="socialPlatform">Social Platform:</label>
+                                <label for="socialPlatform">منصة التواصل:</label>
                                 <select id="socialPlatform">
-                                    <option value="facebook">Facebook</option>
-                                    <option value="instagram">Instagram</option>
-                                    <option value="twitter">Twitter</option>
-                                    <option value="linkedin">LinkedIn</option>
-                                    <option value="tiktok">TikTok</option>
+                                    <option value="facebook">فيسبوك</option>
+                                    <option value="instagram">إنستغرام</option>
+                                    <option value="twitter">تويتر</option>
+                                    <option value="linkedin">لينكد إن</option>
+                                    <option value="tiktok">تيك توك</option>
                                 </select>
                             </div>
-                            <label for="socialInput">Username:</label>
-                            <input type="text" id="socialInput" placeholder="username">
+                            <label for="socialInput">اسم المستخدم:</label>
+                            <input type="text" id="socialInput" placeholder="اسم المستخدم">
                         </div>
                         
                         <div class="input-group" id="wifiInputs" style="display: none;">
-                            <label for="wifiName">Network Name (SSID):</label>
-                            <input type="text" id="wifiName" placeholder="MyWiFiNetwork">
+                            <label for="wifiName">اسم الشبكة (SSID):</label>
+                            <input type="text" id="wifiName" placeholder="اسم شبكتي">
                             
-                            <label for="wifiPassword">Password:</label>
-                            <input type="text" id="wifiPassword" placeholder="SecurePassword123">
+                            <label for="wifiPassword">كلمة المرور:</label>
+                            <input type="text" id="wifiPassword" placeholder="كلمة مرور قوية">
                             
-                            <label for="wifiSecurity">Security Type:</label>
+                            <label for="wifiSecurity">نوع الأمان:</label>
                             <select id="wifiSecurity">
                                 <option value="WPA">WPA/WPA2</option>
                                 <option value="WEP">WEP</option>
-                                <option value="nopass">None (Open)</option>
+                                <option value="nopass">بدون (شبكة مفتوحة)</option>
                             </select>
                         </div>
                         
                         <div class="input-group" id="vcardInputs" style="display: none;">
-                            <label for="vcardName">Full Name:</label>
-                            <input type="text" id="vcardName" placeholder="John Doe">
+                            <label for="vcardName">الاسم الكامل:</label>
+                            <input type="text" id="vcardName" placeholder="محمد أحمد">
                             
-                            <label for="vcardPhone">Phone Number:</label>
-                            <input type="text" id="vcardPhone" placeholder="+1 234 567 890">
+                            <label for="vcardPhone">رقم الهاتف:</label>
+                            <input type="text" id="vcardPhone" placeholder="+966 50 123 4567">
                             
-                            <label for="vcardEmail">Email Address:</label>
-                            <input type="text" id="vcardEmail" placeholder="john@example.com">
+                            <label for="vcardEmail">البريد الإلكتروني:</label>
+                            <input type="text" id="vcardEmail" placeholder="example@domain.com">
                         </div>
                         
                         <div class="input-group" id="barcodeInput" style="display: none;">
-                            <label for="barcodeData">Barcode Data:</label>
-                            <input type="text" id="barcodeData" placeholder="Product ID or Number">
+                            <label for="barcodeData">بيانات الباركود:</label>
+                            <input type="text" id="barcodeData" placeholder="رقم المنتج أو المعرف">
                         </div>
                         
                         <div class="input-group" id="smsInput" style="display: none;">
-                            <label for="smsNumber">Phone Number:</label>
-                            <input type="text" id="smsNumber" placeholder="+1 234 567 890">
+                            <label for="smsNumber">رقم الهاتف:</label>
+                            <input type="text" id="smsNumber" placeholder="+966 50 123 4567">
                             
-                            <label for="smsMessage">Message:</label>
-                            <input type="text" id="smsMessage" placeholder="Your message here">
+                            <label for="smsMessage">الرسالة:</label>
+                            <input type="text" id="smsMessage" placeholder="نص الرسالة هنا">
                         </div>
                         
                         <div class="input-group" id="phoneInput" style="display: none;">
-                            <label for="phoneNumber">Phone Number:</label>
-                            <input type="text" id="phoneNumber" placeholder="+1 234 567 890">
+                            <label for="phoneNumber">رقم الهاتف:</label>
+                            <input type="text" id="phoneNumber" placeholder="+966 50 123 4567">
                         </div>
                     </div>
                     
                     <div class="color-picker">
                         <div class="color-option">
-                            <label>QR Code Color:</label>
+                            <label>لون رمز QR:</label>
                             <input type="color" id="qrColor" value="#000000">
                         </div>
                         <div class="color-option">
-                            <label>Background Color:</label>
+                            <label>لون الخلفية:</label>
                             <input type="color" id="bgColor" value="#FFFFFF">
                         </div>
                     </div>
                     
                     <div class="actions">
                         <button class="btn-primary" id="generateBtn">
-                            <i class="fas fa-bolt"></i> Generate Code
+                            <i class="fas fa-bolt"></i> إنشاء الرمز
                         </button>
                         <button class="btn-secondary" id="clearBtn">
-                            <i class="fas fa-trash"></i> Clear All
+                            <i class="fas fa-trash"></i> مسح الكل
                         </button>
                     </div>
                 </div>
@@ -786,27 +812,27 @@
                         <div id="videoOverlay"></div>
                         <div id="cameraControls">
                             <button class="btn-success" id="startCameraBtn">
-                                <i class="fas fa-video"></i> Start Camera
+                                <i class="fas fa-video"></i> تشغيل الكاميرا
                             </button>
                             <button class="btn-danger" id="stopCameraBtn" style="display: none;">
-                                <i class="fas fa-stop"></i> Stop Camera
+                                <i class="fas fa-stop"></i> إيقاف الكاميرا
                             </button>
                         </div>
                     </div>
                     
                     <div class="actions">
                         <button class="btn-secondary" id="retryScanBtn" style="display: none;">
-                            <i class="fas fa-redo"></i> Scan Again
+                            <i class="fas fa-redo"></i> إعادة المحاولة
                         </button>
                     </div>
                 </div>
                 
                 <!-- Image Scan Section -->
                 <div id="imageSection" style="display: none;">
-                    <label>Select an image containing a QR code:</label>
+                    <label>اختر صورة تحتوي على رمز QR:</label>
                     <div class="file-input-container">
                         <div class="file-input-label">
-                            <i class="fas fa-image"></i> Choose Image File
+                            <i class="fas fa-image"></i> اختر ملف صورة
                         </div>
                         <input type="file" id="imageFile" accept="image/*">
                     </div>
@@ -817,7 +843,7 @@
                     
                     <div class="actions" style="margin-top: 20px;">
                         <button class="btn-success" id="scanImageBtn">
-                            <i class="fas fa-search"></i> Scan Image
+                            <i class="fas fa-search"></i> مسح الصورة
                         </button>
                     </div>
                 </div>
@@ -826,14 +852,20 @@
                 <div class="trust-banner">
                     <i class="fas fa-shield-alt"></i>
                     <div class="trust-content">
-                        <h3>Secure & Trusted</h3>
-                        <p>All processing happens directly on your device - no data is sent to external servers. Your privacy is guaranteed.</p>
+                        <h3>آمن وموثوق</h3>
+                        <p>جميع المعالجات تتم على جهازك - لا يتم إرسال أي بيانات إلى خوادم خارجية. خصوصيتك مضمونة.</p>
                     </div>
+                </div>
+                
+                <!-- Mobile Fix Section -->
+                <div class="mobile-fix-section">
+                    <h3><i class="fas fa-mobile-alt fix-icon"></i> إصلاح مشاكل الهاتف</h3>
+                    <p>تم إصلاح مشاكل التحميل والمشاركة على الأجهزة المحمولة في هذا الإصدار. إذا واجهتك أي مشاكل، تأكد من أن متصفحك محدث.</p>
                 </div>
             </div>
             
             <div class="card">
-                <h2 class="card-title"><i class="fas fa-star"></i> Features & Benefits</h2>
+                <h2 class="card-title"><i class="fas fa-star"></i> الميزات والفوائد</h2>
                 
                 <!-- Features Section -->
                 <div class="features-grid">
@@ -841,56 +873,56 @@
                         <div class="feature-icon">
                             <i class="fas fa-lock"></i>
                         </div>
-                        <h3 class="feature-title">Complete Privacy</h3>
-                        <p class="feature-desc">All processing happens on your device - no data is sent to servers</p>
+                        <h3 class="feature-title">خصوصية كاملة</h3>
+                        <p class="feature-desc">جميع المعالجات تتم على جهازك - لا يتم إرسال بيانات إلى الخوادم</p>
                     </div>
                     
                     <div class="feature-card">
                         <div class="feature-icon">
                             <i class="fas fa-bolt"></i>
                         </div>
-                        <h3 class="feature-title">Lightning Fast</h3>
-                        <p class="feature-desc">Generate and scan codes in seconds with advanced technology</p>
+                        <h3 class="feature-title">سرعة فائقة</h3>
+                        <p class="feature-desc">إنشاء ومسح الرموز في ثوانٍ باستخدام تكنولوجيا متقدمة</p>
                     </div>
                     
                     <div class="feature-card">
                         <div class="feature-icon">
                             <i class="fas fa-mobile-alt"></i>
                         </div>
-                        <h3 class="feature-title">Mobile Optimized</h3>
-                        <p class="feature-desc">Works perfectly on all mobile devices with full feature support</p>
+                        <h3 class="feature-title">مُحسّن للهواتف</h3>
+                        <p class="feature-desc">يعمل بشكل مثالي على جميع الأجهزة المحمولة مع دعم كامل للميزات</p>
                     </div>
                     
                     <div class="feature-card">
                         <div class="feature-icon">
                             <i class="fas fa-history"></i>
                         </div>
-                        <h3 class="feature-title">Scan History</h3>
-                        <p class="feature-desc">Keep track of your recent scans and generated codes</p>
+                        <h3 class="feature-title">سجل المسح</h3>
+                        <p class="feature-desc">احتفظ بسجل لعمليات المسح والرموز المنشأة حديثًا</p>
                     </div>
                 </div>
                 
                 <!-- History Section -->
                 <div class="history-section">
-                    <h3 class="history-title"><i class="fas fa-history"></i> Recent History</h3>
+                    <h3 class="history-title"><i class="fas fa-history"></i> السجل الحديث</h3>
                     
                     <div class="history-items">
                         <div class="history-item">
-                            <div class="history-type">Website URL</div>
+                            <div class="history-type">رابط موقع</div>
                             <div class="history-content">https://example.com/product-page</div>
-                            <div class="history-date">Today, 10:30 AM</div>
+                            <div class="history-date">اليوم، 10:30 صباحًا</div>
                         </div>
                         
                         <div class="history-item">
-                            <div class="history-type">Plain Text</div>
-                            <div class="history-content">Team meeting Thursday at 11 AM in conference room</div>
-                            <div class="history-date">Yesterday, 3:45 PM</div>
+                            <div class="history-type">نص عادي</div>
+                            <div class="history-content">اجتماع الفريق يوم الخميس الساعة 11 صباحًا في قاعة الاجتماعات</div>
+                            <div class="history-date">أمس، 3:45 مساءً</div>
                         </div>
                         
                         <div class="history-item">
-                            <div class="history-type">Wi-Fi Network</div>
-                            <div class="history-content">Network: MyWifi | Password: SecurePass123</div>
-                            <div class="history-date">May 20, 9:15 AM</div>
+                            <div class="history-type">شبكة واي فاي</div>
+                            <div class="history-content">الشبكة: شبكتي | كلمة المرور: SecurePass123</div>
+                            <div class="history-date">20 مايو، 9:15 صباحًا</div>
                         </div>
                     </div>
                 </div>
@@ -898,7 +930,7 @@
         </div>
         
         <div class="app-footer">
-            <p>QR Master Pro v1.1 - Fixed & Enhanced | All processing happens locally on your device</p>
+            <p>QR Master Pro v1.2 - تم إصلاح مشاكل الهاتف | جميع المعالجات تتم محليًا على جهازك</p>
         </div>
     </div>
     
@@ -954,7 +986,7 @@
             scanSection.style.display = 'none';
             imageSection.style.display = 'none';
             resultContainer.style.display = 'none';
-            previewContent.innerHTML = '<div class="preview-placeholder"><i class="fas fa-qrcode"></i><h3>Scan result or generated code will appear here</h3><p>Use the settings below to generate or scan a code</p></div>';
+            previewContent.innerHTML = '<div class="preview-placeholder"><i class="fas fa-qrcode"></i><h3>ستظهر نتيجة المسح أو الرمز المنشأ هنا</h3><p>استخدم الإعدادات أدناه لإنشاء أو مسح رمز</p></div>';
             
             // Show selected section
             if (mode === 'generate') {
@@ -988,9 +1020,9 @@
             if (type === 'url' || type === 'text') {
                 urlInputGroup.style.display = 'block';
                 document.querySelector('#urlInputGroup label').textContent = 
-                    type === 'url' ? 'Website URL:' : 'Text Content:';
+                    type === 'url' ? 'رابط الموقع:' : 'المحتوى النصي:';
                 document.getElementById('urlInput').placeholder = 
-                    type === 'url' ? 'https://example.com' : 'Enter your text here';
+                    type === 'url' ? 'https://example.com' : 'أدخل النص الخاص بك هنا';
             } else if (type === 'social') {
                 socialUsername.style.display = 'block';
             } else if (type === 'wifi') {
@@ -1027,10 +1059,10 @@
                 scanQRCode();
                 
                 // Restore preview placeholder
-                previewContent.innerHTML = '<div class="preview-placeholder"><i class="fas fa-camera"></i><h3>Camera is active</h3><p>Point your camera at a QR code to scan it</p></div>';
+                previewContent.innerHTML = '<div class="preview-placeholder"><i class="fas fa-camera"></i><h3>الكاميرا نشطة</h3><p>وجّه الكاميرا نحو رمز QR لمسحه</p></div>';
             } catch (err) {
-                showNotification('Camera access error: ' + err.message);
-                previewContent.innerHTML = '<div class="preview-placeholder"><i class="fas fa-video-slash"></i><h3>Camera Error</h3><p>Could not access camera: ' + err.message + '</p></div>';
+                showNotification('خطأ في الوصول للكاميرا: ' + err.message);
+                previewContent.innerHTML = '<div class="preview-placeholder"><i class="fas fa-video-slash"></i><h3>خطأ في الكاميرا</h3><p>تعذر الوصول للكاميرا: ' + err.message + '</p></div>';
             }
         });
         
@@ -1081,7 +1113,7 @@
         
         // Retry scanning
         retryScanBtn.addEventListener('click', function() {
-            previewContent.innerHTML = '<div class="preview-placeholder"><i class="fas fa-redo"></i><h3>Resuming scan...</h3></div>';
+            previewContent.innerHTML = '<div class="preview-placeholder"><i class="fas fa-redo"></i><h3>جاري استئناف المسح...</h3></div>';
             resultContainer.style.display = 'none';
             retryScanBtn.style.display = 'none';
             startCameraBtn.click();
@@ -1096,7 +1128,7 @@
             if (type === 'url' || type === 'text') {
                 data = document.getElementById('urlInput').value;
                 if (!data) {
-                    showNotification('Please enter data for the code');
+                    showNotification('الرجاء إدخال بيانات للرمز');
                     return;
                 }
             } else if (type === 'social') {
@@ -1104,7 +1136,7 @@
                 const platform = document.getElementById('socialPlatform').value;
                 
                 if (!username) {
-                    showNotification('Please enter a username');
+                    showNotification('الرجاء إدخال اسم مستخدم');
                     return;
                 }
                 
@@ -1124,7 +1156,7 @@
                 const security = document.getElementById('wifiSecurity').value;
                 
                 if (!name) {
-                    showNotification('Please enter a network name');
+                    showNotification('الرجاء إدخال اسم الشبكة');
                     return;
                 }
                 
@@ -1135,7 +1167,7 @@
                 const email = document.getElementById('vcardEmail').value;
                 
                 if (!name || !phone) {
-                    showNotification('Please enter name and phone number');
+                    showNotification('الرجاء إدخال الاسم ورقم الهاتف');
                     return;
                 }
                 
@@ -1143,7 +1175,7 @@
             } else if (type === 'barcode') {
                 data = document.getElementById('barcodeData').value;
                 if (!data) {
-                    showNotification('Please enter barcode data');
+                    showNotification('الرجاء إدخال بيانات الباركود');
                     return;
                 }
             } else if (type === 'sms') {
@@ -1151,7 +1183,7 @@
                 const message = document.getElementById('smsMessage').value;
                 
                 if (!number) {
-                    showNotification('Please enter a phone number');
+                    showNotification('الرجاء إدخال رقم هاتف');
                     return;
                 }
                 
@@ -1159,7 +1191,7 @@
             } else if (type === 'contact') {
                 data = `tel:${document.getElementById('phoneNumber').value}`;
                 if (!data || data === 'tel:') {
-                    showNotification('Please enter a phone number');
+                    showNotification('الرجاء إدخال رقم هاتف');
                     return;
                 }
             }
@@ -1194,8 +1226,8 @@
                     qrContainer.querySelector('canvas').classList.add('qr-preview');
                     showResult(data);
                 } catch (error) {
-                    showNotification('Error generating QR code: ' + error.message);
-                    previewContent.innerHTML = '<div class="preview-placeholder"><i class="fas fa-exclamation-circle"></i><h3>Generation Error</h3><p>Could not generate QR code</p></div>';
+                    showNotification('خطأ في إنشاء رمز QR: ' + error.message);
+                    previewContent.innerHTML = '<div class="preview-placeholder"><i class="fas fa-exclamation-circle"></i><h3>خطأ في الإنشاء</h3><p>تعذر إنشاء رمز QR</p></div>';
                 }
             }, 300);
         });
@@ -1214,7 +1246,7 @@
             document.getElementById('smsMessage').value = '';
             document.getElementById('phoneNumber').value = '';
             
-            previewContent.innerHTML = '<div class="preview-placeholder"><i class="fas fa-qrcode"></i><h3>Scan result or generated code will appear here</h3><p>Use the settings below to generate or scan a code</p></div>';
+            previewContent.innerHTML = '<div class="preview-placeholder"><i class="fas fa-qrcode"></i><h3>ستظهر نتيجة المسح أو الرمز المنشأ هنا</h3><p>استخدم الإعدادات أدناه لإنشاء أو مسح رمز</p></div>';
             resultContainer.style.display = 'none';
             imagePreview.style.display = 'none';
         });
@@ -1229,14 +1261,14 @@
         copyResultBtn.addEventListener('click', function() {
             navigator.clipboard.writeText(resultText.textContent)
                 .then(() => {
-                    showNotification('Result copied to clipboard!');
+                    showNotification('تم نسخ النتيجة إلى الحافظة!');
                 })
                 .catch(err => {
-                    showNotification('Copy error: ' + err.message);
+                    showNotification('خطأ في النسخ: ' + err.message);
                 });
         });
         
-        // Download result
+        // Download result - FIXED FOR MOBILE
         downloadBtn.addEventListener('click', function() {
             const canvas = document.querySelector('#qr-container canvas');
             if (canvas) {
@@ -1244,68 +1276,84 @@
                     // Create a temporary link
                     const link = document.createElement('a');
                     link.download = 'qrcode.png';
-                    link.href = canvas.toDataURL('image/png');
                     
-                    // Create a temporary event to trigger the download
+                    // Convert canvas to data URL
+                    const dataURL = canvas.toDataURL('image/png');
+                    link.href = dataURL;
+                    
+                    // Append to body and trigger download
                     document.body.appendChild(link);
                     link.click();
                     document.body.removeChild(link);
                     
                     // Show success notification
-                    showNotification('QR Code downloaded successfully!');
+                    showNotification('تم تحميل رمز QR بنجاح!');
                 } catch (err) {
-                    showNotification('Download error: ' + err.message);
+                    showNotification('خطأ في التحميل: ' + err.message);
                 }
             } else {
-                showNotification('No QR code to download');
+                showNotification('لا يوجد رمز QR لتحميله');
             }
         });
         
-        // Share result
+        // Share result - FIXED FOR MOBILE
         shareBtn.addEventListener('click', async function() {
-            try {
-                const canvas = document.querySelector('#qr-container canvas');
-                if (canvas) {
-                    // Convert canvas to data URL
-                    const dataUrl = canvas.toDataURL('image/png');
-                    
-                    // Fetch the image as blob
-                    const response = await fetch(dataUrl);
-                    const blob = await response.blob();
-                    
-                    // Create a file from blob
-                    const file = new File([blob], 'qrcode.png', { type: 'image/png' });
-                    
-                    // Check if Web Share API supports files
-                    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            const canvas = document.querySelector('#qr-container canvas');
+            const result = resultText.textContent;
+            
+            if (canvas) {
+                try {
+                    // Convert canvas to blob
+                    canvas.toBlob(async function(blob) {
+                        if (!blob) {
+                            showNotification('فشل في إنشاء صورة للمشاركة');
+                            return;
+                        }
+                        
+                        const file = new File([blob], 'qrcode.png', { type: 'image/png' });
+                        
+                        // Check if Web Share API is available
+                        if (navigator.share) {
+                            try {
+                                await navigator.share({
+                                    title: 'رمز QR',
+                                    text: 'تحقق من رمز QR الذي قمت بإنشائه:',
+                                    files: [file]
+                                });
+                            } catch (shareErr) {
+                                if (shareErr.name !== 'AbortError') {
+                                    showNotification('لم يكتمل المشاركة: ' + shareErr.message);
+                                }
+                            }
+                        } else {
+                            // Fallback to download
+                            downloadBtn.click();
+                            showNotification('شارك رمز QR عن طريق تحميله');
+                        }
+                    }, 'image/png');
+                } catch (err) {
+                    showNotification('خطأ في المشاركة: ' + err.message);
+                }
+            } else if (result) {
+                // Share text content
+                if (navigator.share) {
+                    try {
                         await navigator.share({
-                            title: 'QR Code',
-                            text: 'Check out this QR code I created:',
-                            files: [file]
+                            title: 'محتوى رمز QR',
+                            text: result
                         });
-                    } else {
-                        // Fallback to download if sharing isn't supported
-                        downloadBtn.click();
+                    } catch (shareErr) {
+                        if (shareErr.name !== 'AbortError') {
+                            // Fallback to copy
+                            copyResultBtn.click();
+                        }
                     }
                 } else {
-                    // Share text if no QR code is available
-                    if (navigator.share) {
-                        await navigator.share({
-                            title: 'QR Code Content',
-                            text: resultText.textContent
-                        });
-                    } else {
-                        // Copy text to clipboard as fallback
-                        navigator.clipboard.writeText(resultText.textContent)
-                            .then(() => {
-                                showNotification('Content copied to clipboard!');
-                            });
-                    }
+                    // Copy text to clipboard
+                    copyResultBtn.click();
                 }
-            } catch (err) {
-                if (err.name !== 'AbortError') {
-                    showNotification('Sharing not supported or cancelled');
-                }
+            } else {
+                showNotification('لا يوجد شيء للمشاركة');
             }
         });
         
@@ -1316,7 +1364,7 @@
             
             // Check if file is an image
             if (!file.type.match('image.*')) {
-                showNotification('Please select an image file');
+                showNotification('الرجاء اختيار ملف صورة');
                 return;
             }
             
@@ -1332,7 +1380,7 @@
         scanImageBtn.addEventListener('click', function() {
             const file = imageFileInput.files[0];
             if (!file) {
-                showNotification('Please select an image file');
+                showNotification('الرجاء اختيار ملف صورة');
                 return;
             }
             
@@ -1364,15 +1412,15 @@
                         
                         showResult(code.data);
                     } else {
-                        showNotification('No QR code found in the image');
-                        previewContent.innerHTML = '<div class="preview-placeholder"><i class="fas fa-search"></i><h3>No QR Code Found</h3><p>We couldn\'t find a QR code in this image</p></div>';
+                        showNotification('لم يتم العثور على رمز QR في الصورة');
+                        previewContent.innerHTML = '<div class="preview-placeholder"><i class="fas fa-search"></i><h3>لم يتم العثور على رمز QR</h3><p>تعذر العثور على رمز QR في هذه الصورة</p></div>';
                     }
                 };
             };
             
             reader.onerror = function() {
-                showNotification('Error reading image file');
-                previewContent.innerHTML = '<div class="preview-placeholder"><i class="fas fa-exclamation-circle"></i><h3>Image Error</h3><p>Could not read the selected image</p></div>';
+                showNotification('خطأ في قراءة ملف الصورة');
+                previewContent.innerHTML = '<div class="preview-placeholder"><i class="fas fa-exclamation-circle"></i><h3>خطأ في الصورة</h3><p>تعذر قراءة الصورة المختارة</p></div>';
             };
             
             reader.readAsDataURL(file);
@@ -1394,7 +1442,9 @@
             
             // Remove after animation
             setTimeout(() => {
-                notification.remove();
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
             }, 3000);
         }
         
@@ -1403,7 +1453,7 @@
         
         // Add file input name display
         imageFileInput.addEventListener('change', function() {
-            const fileName = this.files[0] ? this.files[0].name : 'No file selected';
+            const fileName = this.files[0] ? this.files[0].name : 'لم يتم اختيار ملف';
             document.querySelector('.file-input-label').innerHTML = `<i class="fas fa-image"></i> ${fileName}`;
         });
     </script>

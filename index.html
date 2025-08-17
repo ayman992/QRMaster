@@ -1,450 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>QRMaster — QR Scanner & Generator</title>
-  <link rel="preconnect" href="https://unpkg.com" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Code App</title>
   <style>
-    :root{
-      --bg: #0b0f22;         /* dark background */
-      --bg-2:#111739;        /* dark card */
-      --ink:#e6e9ff;         /* light text */
-      --muted:#9aa3c2;       /* muted text */
-      --primary:#7c83ff;     /* accent */
-      --primary-2:#9aa0ff;   /* accent 2 */
-      --surface:#0f1430;     /* surface */
-      --radius:18px;
-      --border: #22305e;
-      --chip:#1a2250;
-      --chip-border:#2a3974;
-      --chip-active:#dfe4ff;
-      --chip-active-ink:#2b34a2;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
-      color: var(--ink);
-      background:
-        radial-gradient(1200px 800px at 50% -10%, #6c72ff22, transparent 60%),
-        linear-gradient(180deg, #0b0f22 0%, #0b0f22 35%, #0e1230 60%, #0b0f22 100%);
-      display:flex; flex-direction:column;
-    }
-    header{
-      padding:14px 18px; font-weight:800; font-size:18px; backdrop-filter:blur(6px);
-      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,0));
-      border-bottom:1px solid #ffffff14;
-    }
-    .container{flex:1; padding:14px; padding-bottom:84px;}
-    .card{
-      background: var(--bg-2); color: var(--ink); border-radius:var(--radius);
-      padding:16px; box-shadow: 0 8px 30px rgba(0,0,0,.22);
-      border:1px solid var(--border);
-    }
-    .center-card{display:flex; align-items:center; justify-content:center; text-align:center; min-height:52vh}
-    .perm-icon{width:64px; height:64px; border:2px solid var(--primary); border-radius:18px; display:flex; align-items:center; justify-content:center; margin:0 auto 16px; color:var(--primary)}
-    .btn{display:inline-flex; align-items:center; justify-content:center; gap:8px; border:0; border-radius:999px; padding:12px 18px; font-weight:800; cursor:pointer}
-    .btn-primary{background:var(--primary); color:#0b0f22; box-shadow:0 8px 20px #4f46e544}
-    .btn-soft{background:var(--chip); color:var(--ink); border:1px solid var(--chip-border)}
-    .btn-ghost{background:transparent; color:var(--ink); border:1px solid var(--border)}
-    .row{display:flex; gap:12px; flex-wrap:wrap}
-    .grid{display:grid; gap:12px}
-    .grid-2{grid-template-columns:repeat(2,1fr)}
-    .muted{color:var(--muted)}
-    .section-title{font-weight:900; font-size:14px; margin:8px 0 10px; color:var(--chip-active)}
-    input[type="text"], input[type="url"], input[type="tel"], input[type="email"], textarea{
-      width:100%; padding:12px 14px; border-radius:14px; border:1px solid var(--border); outline:none; font-size:15px;
-      background: var(--surface); color: var(--ink);
-    }
-    input[type="color"]{width:42px; height:42px; border:0; border-radius:50%; padding:0; background:transparent; cursor:pointer}
-    .chip{padding:10px 14px; border-radius:999px; border:1px solid var(--chip-border); cursor:pointer; font-weight:700; background:var(--chip); color:var(--ink)}
-    .chip.active{background:var(--chip-active); color:var(--chip-active-ink); border-color:#c7d2fe}
-    .qr-box{display:flex; align-items:center; justify-content:center; background:var(--surface); border-radius:16px; padding:16px; min-height:240px; border:1px solid var(--border)}
-    .result{background:var(--surface); border-radius:14px; padding:12px; word-break:break-all; border:1px solid var(--border)}
-    .result a{color:#b7bcff; text-decoration:none}
-    .history-item{background:var(--bg-2); border-radius:14px; padding:12px; display:flex; align-items:center; justify-content:space-between; gap:10px; border:1px solid var(--border)}
-    .pill{font-size:12px; padding:6px 10px; border-radius:999px; background:#2a3974; color:#e7ebff; font-weight:900}
-    nav{
-      position:fixed; left:0; right:0; bottom:0; display:flex; justify-content:space-around; align-items:center;
-      padding:10px 12px; background:#0b0fdd18; backdrop-filter: blur(8px); border-top-left-radius:16px; border-top-right-radius:16px; box-shadow:0 -8px 20px rgba(0,0,0,.32);
-      border-top:1px solid #ffffff22;
-    }
-    .tab{display:flex; flex-direction:column; align-items:center; gap:6px; color:#c4c8ff; font-size:12px; text-decoration:none}
-    .tab.active{color:#ffffff}
-    .icon{width:22px; height:22px}
-    video{width:100%; border-radius:14px}
-    canvas{display:none}
-    .tabs{display:flex; gap:8px; background:var(--chip); padding:6px; border-radius:999px; width:max-content; border:1px solid var(--chip-border); overflow:auto}
-    .tabs button{border:0; background:transparent; padding:8px 12px; border-radius:999px; font-weight:800; color:#cbd3ff; cursor:pointer; white-space:nowrap}
-    .tabs button.active{background:#ffffff; color:#2b34a2; box-shadow:0 2px 8px #1a2250}
-
-    /* Responsive */
-    @media (max-width: 880px){
-      .grid-2{grid-template-columns:1fr}
-      .container{padding-bottom:96px}
-    }
+    body {font-family: Arial, sans-serif; margin:0; padding:0; background:#121212; color:#fff; text-align:center;}
+    header {padding:1rem; background:#1e1e1e; font-size:1.4rem; font-weight:bold;}
+    main {padding:1rem;}
+    select, input, button {margin:0.5rem; padding:0.7rem; border-radius:8px; border:none; font-size:1rem;}
+    input, select {width:80%;}
+    button {background:#6200ea; color:#fff; cursor:pointer;}
+    button:hover {background:#3700b3;}
+    canvas {margin-top:1rem; background:#fff; padding:10px; border-radius:12px;}
+    .actions {margin-top:1rem;}
+    .actions button {margin:0.3rem;}
+    #result {margin-top:1rem; font-size:0.9rem;}
   </style>
 </head>
 <body>
-  <header id="title">Scanner</header>
-  <main class="container">
-    <!-- SCANNER -->
-    <section id="screen-scanner" class="grid" style="display:block">
-      <div id="permission-card" class="card center-card">
-        <div>
-          <div class="perm-icon">📷</div>
-          <h2 style="margin:0 0 6px">Camera Permission Required</h2>
-          <p class="muted" style="margin:0 0 14px">QRMaster needs camera access to scan QR codes.</p>
-          <button id="btn-grant" class="btn btn-primary">Grant Permission</button>
-        </div>
-      </div>
+  <header>QR Code Generator & Scanner</header>
+  <main>
+    <h2>Generate QR Code</h2>
+    <select id="qrType">
+      <option value="text">Text</option>
+      <option value="url">URL</option>
+      <option value="phone">Phone</option>
+      <option value="email">Email</option>
+      <option value="facebook">Facebook</option>
+      <option value="instagram">Instagram</option>
+      <option value="youtube">YouTube</option>
+      <option value="snapchat">Snapchat</option>
+      <option value="twitter">X (Twitter)</option>
+      <option value="tiktok">TikTok</option>
+    </select>
+    <br>
+    <input type="text" id="qrInput" placeholder="Enter your text or username">
+    <br>
+    <button onclick="generateQR()">Generate</button>
+    <div id="qrcode"></div>
+    <div class="actions">
+      <button onclick="openQR()">Open QR</button>
+      <button onclick="shareQR()">Share / Copy</button>
+      <button onclick="copyQRImage()">Copy QR Image</button>
+    </div>
 
-      <div id="scanner-ui" class="grid" style="display:none; gap:12px">
-        <video id="video" playsinline></video>
-        <div class="row">
-          <button id="btn-flip" class="btn btn-soft">Flip Camera</button>
-          <button id="btn-stop" class="btn btn-ghost">Stop</button>
-        </div>
-        <div id="scan-result" class="result" style="display:none"></div>
-        <canvas id="canvas"></canvas>
-      </div>
-    </section>
-
-    <!-- GENERATOR -->
-    <section id="screen-generator" style="display:none" class="grid">
-      <div class="tabs" role="tablist">
-        <button class="active" data-mode="text">Text</button>
-        <button data-mode="url">URL</button>
-        <button data-mode="phone">Phone</button>
-        <button data-mode="email">Email</button>
-        <button data-mode="facebook">Facebook</button>
-        <button data-mode="instagram">Instagram</button>
-        <button data-mode="youtube">YouTube</button>
-        <button data-mode="snapchat">Snapchat</button>
-        <button data-mode="x">X (Twitter)</button>
-        <button data-mode="tiktok">TikTok</button>
-      </div>
-
-      <div class="card grid" style="gap:14px">
-        <div>
-          <div class="section-title" id="input-label">Enter Content</div>
-          <input id="gen-input" type="text" placeholder="Enter text" />
-        </div>
-        <div class="grid grid-2">
-          <div class="card" style="padding:12px">
-            <div class="section-title">Customization</div>
-            <div class="row" style="align-items:center">
-              <div style="display:grid; gap:6px; justify-items:center">
-                <span class="muted" style="font-size:12px">QR Color</span>
-                <input id="qrColor" type="color" value="#ffffff" />
-              </div>
-              <div style="display:grid; gap:6px; justify-items:center">
-                <span class="muted" style="font-size:12px">Background</span>
-                <input id="bgColor" type="color" value="#0b0f22" />
-              </div>
-            </div>
-            <div class="row" style="margin-top:10px">
-              <span class="chip" data-size="200">Small</span>
-              <span class="chip active" data-size="260">Medium</span>
-              <span class="chip" data-size="320">Large</span>
-            </div>
-          </div>
-          <div class="qr-box" id="qr-box">
-            <div id="qrcode"></div>
-          </div>
-        </div>
-        <div class="row">
-          <button id="btn-generate" class="btn btn-primary">Generate QR</button>
-          <button id="btn-download" class="btn btn-soft">Download</button>
-          <button id="btn-share" class="btn btn-ghost">Share</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- HISTORY -->
-    <section id="screen-history" style="display:none" class="grid" >
-      <div class="row" style="justify-content:space-between; align-items:center">
-        <h3 style="margin:6px 0">History</h3>
-        <button id="btn-clear-history" class="btn btn-ghost">Clear All</button>
-      </div>
-      <div id="history-list" class="grid" style="gap:10px"></div>
-    </section>
+    <h2>Scan QR Code</h2>
+    <video id="preview" width="250" height="200" style="border:1px solid #555; border-radius:8px;"></video>
+    <div id="result"></div>
   </main>
 
-  <!-- Bottom Nav -->
-  <nav>
-    <a class="tab active" data-screen="scanner" href="#">📷<span>Scanner</span></a>
-    <a class="tab" data-screen="generator" href="#">➕<span>Generator</span></a>
-    <a class="tab" data-screen="history" href="#">🕒<span>History</span></a>
-  </nav>
+  <!-- QR Code library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <!-- jsQR for scanning -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jsqr/1.4.0/jsQR.min.js"></script>
 
-  <script src="https://unpkg.com/jsqr@1.4.0/dist/jsQR.js"></script>
-  <script src="https://unpkg.com/qrcodejs@1.0.0/qrcode.min.js"></script>
   <script>
-    // —— Router ——
-    const screens = {
-      scanner: document.getElementById('screen-scanner'),
-      generator: document.getElementById('screen-generator'),
-      history: document.getElementById('screen-history'),
-    };
-    const tabs = document.querySelectorAll('nav .tab');
-    const title = document.getElementById('title');
-    function show(screen){
-      Object.entries(screens).forEach(([k,el])=> el.style.display = (k===screen)?'block':'none');
-      tabs.forEach(t=> t.classList.toggle('active', t.dataset.screen===screen));
-      title.textContent = screen==='scanner'?'Scanner':screen==='generator'?'Generator':'History';
-    }
-    tabs.forEach(t=> t.addEventListener('click', (e)=>{e.preventDefault(); show(t.dataset.screen);}));
-
-    // —— Scanner ——
-    const video = document.getElementById('video');
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
-    const scanResult = document.getElementById('scan-result');
-    const permCard = document.getElementById('permission-card');
-    const scannerUI = document.getElementById('scanner-ui');
-    const btnGrant = document.getElementById('btn-grant');
-    const btnFlip = document.getElementById('btn-flip');
-    const btnStop = document.getElementById('btn-stop');
-
-    let stream = null;
-    let facing = 'environment';
-    let scanning = false;
-
-    async function startCamera(){
-      try{
-        stream = await navigator.mediaDevices.getUserMedia({video:{facingMode: {ideal:facing}}, audio:false});
-        video.srcObject = stream;
-        await video.play();
-        permCard.style.display='none';
-        scannerUI.style.display='grid';
-        scanning = true;
-        tick();
-      }catch(err){
-        alert('Cannot access camera.\n' + err.message);
+    let qrCode;
+    function generateQR() {
+      const type = document.getElementById("qrType").value;
+      let input = document.getElementById("qrInput").value.trim();
+      if (!input) { alert("Please enter a value"); return; }
+      let value = "";
+      switch(type) {
+        case "text": value = input; break;
+        case "url": value = input.startsWith("http") ? input : "https://" + input; break;
+        case "phone": value = "tel:" + input; break;
+        case "email": value = "mailto:" + input; break;
+        case "facebook": value = "https://facebook.com/" + input; break;
+        case "instagram": value = "https://instagram.com/" + input; break;
+        case "youtube": value = "https://youtube.com/@" + input; break;
+        case "snapchat": value = "https://snapchat.com/add/" + input; break;
+        case "twitter": value = "https://x.com/" + input; break;
+        case "tiktok": value = "https://tiktok.com/@" + input; break;
       }
-    }
-
-    function stopCamera(){
-      scanning = false;
-      if(stream){ stream.getTracks().forEach(t=>t.stop()); stream=null; }
-    }
-
-    btnGrant.addEventListener('click', startCamera);
-    btnFlip.addEventListener('click', ()=>{ facing = facing==='environment'?'user':'environment'; stopCamera(); startCamera(); });
-    btnStop.addEventListener('click', stopCamera);
-
-    function saveToHistory(type, value){
-      const items = JSON.parse(localStorage.getItem('qr-history')||'[]');
-      items.unshift({type, value, time: new Date().toISOString()});
-      localStorage.setItem('qr-history', JSON.stringify(items.slice(0,200)));
-      renderHistory();
-    }
-
-    function renderHistory(){
-      const list = document.getElementById('history-list');
-      const items = JSON.parse(localStorage.getItem('qr-history')||'[]');
-      list.innerHTML = '';
-      if(items.length===0){
-        list.innerHTML = '<div class="card" style="text-align:center">No items in history yet.</div>'; return;
-      }
-      items.forEach((it, idx)=>{
-        const div = document.createElement('div');
-        div.className='history-item';
-        const friendly = new Date(it.time).toLocaleString('en');
-        div.innerHTML = `
-          <div style="flex:1; min-width:0">
-            <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px">
-              <span class="pill">${it.type==='scan'?'Scanned':'Generated'}</span>
-              <span class="muted" style="font-size:12px">${friendly}</span>
-            </div>
-            <div style="word-break:break-word">${escapeHTML(it.value)}</div>
-          </div>
-          <div class="row">
-            <button class="btn btn-soft" data-act="copy" data-i="${idx}">Copy</button>
-            <button class="btn btn-ghost" data-act="del" data-i="${idx}">Delete</button>
-          </div>`;
-        list.appendChild(div);
+      document.getElementById("qrcode").innerHTML = "";
+      qrCode = new QRCode(document.getElementById("qrcode"), {
+        text: value, width: 200, height: 200
       });
-      list.onclick = (e)=>{
-        const btn = e.target.closest('button');
-        if(!btn) return;
-        const i = +btn.dataset.i;
-        const items = JSON.parse(localStorage.getItem('qr-history')||'[]');
-        if(btn.dataset.act==='copy'){
-          navigator.clipboard.writeText(items[i].value);
-        }else if(btn.dataset.act==='del'){
-          items.splice(i,1); localStorage.setItem('qr-history', JSON.stringify(items)); renderHistory();
-        }
+      qrCode._value = value; // save for sharing
+    }
+
+    function openQR() {
+      if (!qrCode) { alert("Generate a QR first!"); return; }
+      const img = document.querySelector("#qrcode img") || document.querySelector("#qrcode canvas");
+      if (img) {
+        const dataUrl = img.src || img.toDataURL();
+        window.open(dataUrl, "_blank");
       }
     }
 
-    document.getElementById('btn-clear-history').addEventListener('click', ()=>{
-      if(confirm('Clear all history?')){ localStorage.removeItem('qr-history'); renderHistory(); }
-    });
+    function shareQR() {
+      if (!qrCode) { alert("Generate a QR first!"); return; }
+      const value = qrCode._value;
+      if (navigator.share) {
+        navigator.share({title:"QR Code", text:"Here is my QR Code", url:value})
+          .catch(err => console.log("Share canceled", err));
+      } else {
+        navigator.clipboard.writeText(value).then(() => {
+          alert("Link copied: " + value);
+        });
+      }
+    }
 
-    function tick(){
-      if(!scanning) return;
-      if(video.readyState === video.HAVE_ENOUGH_DATA){
-        canvas.width = video.videoWidth;
+    async function copyQRImage() {
+      if (!qrCode) { alert("Generate a QR first!"); return; }
+      const canvas = document.querySelector("#qrcode canvas");
+      if (!canvas) { alert("QR not ready"); return; }
+      canvas.toBlob(async blob => {
+        try {
+          await navigator.clipboard.write([new ClipboardItem({'image/png': blob})]);
+          alert("QR image copied to clipboard!");
+        } catch (err) {
+          alert("Copy image not supported on this device/browser.");
+        }
+      });
+    }
+
+    // QR Scanner
+    const video = document.getElementById("preview");
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
+      .then(stream => { video.srcObject = stream; video.setAttribute("playsinline", true); video.play(); requestAnimationFrame(tick); });
+
+    function tick() {
+      if (video.readyState === video.HAVE_ENOUGH_DATA) {
         canvas.height = video.videoHeight;
+        canvas.width = video.videoWidth;
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
         const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        const code = jsQR(imageData.data, imageData.width, imageData.height, { inversionAttempts: 'dontInvert' });
-        if(code){
-          scanning = false; // stop once found
-          stopCamera();
-          const val = code.data.trim();
-          scanResult.style.display='block';
-          scanResult.innerHTML = formatResult(val);
-          saveToHistory('scan', val);
+        const code = jsQR(imageData.data, canvas.width, canvas.height);
+        if (code) {
+          document.getElementById("result").innerText = "Scanned: " + code.data;
         }
       }
       requestAnimationFrame(tick);
     }
-
-    function isURL(str){ try{ new URL(str); return true;}catch{ return false;} }
-    function isTel(str){ return /^\+?\d[\d\s-]{3,}$/.test(str); }
-    function formatResult(val){
-      if(isURL(val)) return `<b>URL:</b> <a target="_blank" href="${val}">${val}</a>`+copyBtn(val);
-      if(isTel(val)) return `<b>Phone:</b> <a href="tel:${val}">${val}</a>`+copyBtn(val);
-      if(/^mailto:/.test(val)) return `<b>Email:</b> <a href="${val}">${val.replace('mailto:','')}</a>`+copyBtn(val);
-      return `<b>Text:</b> ${escapeHTML(val)} `+copyBtn(val);
-    }
-    function copyBtn(v){ return ` <button class="btn btn-soft" onclick="navigator.clipboard.writeText('${escapeAttr(v)}')">Copy</button>`}
-    function escapeHTML(s){ return s.replace(/[&<>\"']/g, m=> ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[m])); }
-    function escapeAttr(s){ return s.replace(/[\\']/g, m=> ({'\\':'\\\\','\'':'\\\''}[m])); }
-
-    // —— Generator ——
-    const qrcodeContainer = document.getElementById('qrcode');
-    const sizeChips = Array.from(document.querySelectorAll('.chip'));
-    let qrSize = 260;
-    let mode = 'text';
-
-    const input = document.getElementById('gen-input');
-    const inputLabel = document.getElementById('input-label');
-
-    const socialBases = {
-      facebook: (u)=> `https://facebook.com/${u}`,
-      instagram: (u)=> `https://instagram.com/${u}`,
-      youtube:  (u)=> `https://youtube.com/@${u}`,
-      snapchat: (u)=> `https://snapchat.com/add/${u}`,
-      x:        (u)=> `https://x.com/${u}`,
-      tiktok:   (u)=> `https://tiktok.com/@${u}`,
-    };
-
-    function updatePlaceholder(){
-      switch(mode){
-        case 'url': input.placeholder='Enter full URL (https://...)'; inputLabel.textContent='Enter URL'; break;
-        case 'phone': input.placeholder='Enter phone number'; inputLabel.textContent='Enter Phone'; break;
-        case 'email': input.placeholder='Enter email (name@example.com)'; inputLabel.textContent='Enter Email'; break;
-        case 'facebook':
-        case 'instagram':
-        case 'youtube':
-        case 'snapchat':
-        case 'x':
-        case 'tiktok':
-          input.placeholder='Enter username only'; inputLabel.textContent=`${mode[0].toUpperCase()+mode.slice(1)} Username`; break;
-        default: input.placeholder='Enter text'; inputLabel.textContent='Enter Text';
-      }
-    }
-
-    document.querySelectorAll('.tabs button').forEach(btn=>{
-      btn.addEventListener('click', ()=>{
-        document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));
-        btn.classList.add('active');
-        mode = btn.dataset.mode;
-        updatePlaceholder();
-      });
-    });
-
-    sizeChips.forEach(ch=> ch.addEventListener('click', ()=>{
-      sizeChips.forEach(c=>c.classList.remove('active'));
-      ch.classList.add('active');
-      qrSize = +ch.dataset.size;
-    }));
-
-    function ensureHttps(u){
-      if(/^https?:\/\//i.test(u)) return u; return 'https://' + u;
-    }
-
-    function makeQR(value){
-      qrcodeContainer.innerHTML = '';
-      const fg = document.getElementById('qrColor').value;
-      const bg = document.getElementById('bgColor').value;
-      new QRCode(qrcodeContainer, { text: value, width: qrSize, height: qrSize, colorDark: fg, colorLight: bg, correctLevel: QRCode.CorrectLevel.H });
-    }
-
-    function buildValue(){
-      const v = input.value.trim();
-      if(!v) return {ok:false, msg:'Please enter a value.'};
-      switch(mode){
-        case 'url': return {ok:true, value: ensureHttps(v)};
-        case 'phone': return {ok:true, value: 'tel:' + v};
-        case 'email': return {ok:true, value: 'mailto:' + v};
-        case 'facebook':
-        case 'instagram':
-        case 'youtube':
-        case 'snapchat':
-        case 'x':
-        case 'tiktok':
-          const user = v.replace(/^@/, '');
-          const url = socialBases[mode](user);
-          return {ok:true, value: url};
-        default: return {ok:true, value: v};
-      }
-    }
-
-    document.getElementById('btn-generate').addEventListener('click', ()=>{
-      const r = buildValue();
-      if(!r.ok){ alert(r.msg); return; }
-      makeQR(r.value);
-      saveToHistory('gen', r.value);
-    });
-
-    document.getElementById('btn-download').addEventListener('click', ()=>{
-      const img = qrcodeContainer.querySelector('img') || qrcodeContainer.querySelector('canvas');
-      if(!img){ alert('Generate the code first.'); return; }
-      let url = img.src || img.toDataURL('image/png');
-      const a = document.createElement('a');
-      a.href = url; a.download = 'qrcode.png'; a.click();
-    });
-
-    async function shareBlob(blob){
-      const file = new File([blob], 'qrcode.png', {type:'image/png'});
-      const data = { files: [file], title: 'QR Code', text: 'QR code generated by QRMaster' };
-      if(navigator.canShare && navigator.canShare(data)){
-        try{ await navigator.share(data); }catch(e){ /* user canceled */ }
-      }else{
-        // Fallback: copy URL (if any) or notify
-        const img = qrcodeContainer.querySelector('img');
-        if(img && img.src){
-          try{ await navigator.clipboard.writeText(img.src); alert('Image data URL copied to clipboard.'); }
-          catch{ alert('Sharing is not supported on this device.'); }
-        }else{
-          alert('Sharing is not supported on this device.');
-        }
-      }
-    }
-
-    document.getElementById('btn-share').addEventListener('click', async ()=>{
-      const canvasEl = qrcodeContainer.querySelector('canvas');
-      const imgEl = qrcodeContainer.querySelector('img');
-      if(!canvasEl && !imgEl){ alert('Generate the code first.'); return; }
-      if(canvasEl){ canvasEl.toBlob(shareBlob); }
-      else{
-        // Convert img src (data URL) to blob
-        const res = await fetch(imgEl.src); const blob = await res.blob();
-        shareBlob(blob);
-      }
-    });
-
-    // Init
-    renderHistory();
-    updatePlaceholder();
-    show('scanner');
   </script>
 </body>
 </html>
